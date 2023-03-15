@@ -2,16 +2,38 @@ import react, { useEffect, useState } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
 
-import { RocketLaunchIcon, CheckIcon } from "@heroicons/react/24/solid";
+import {
+  RocketLaunchIcon,
+  CheckIcon,
+  FireIcon,
+} from "@heroicons/react/24/solid";
 
 import NumberBox from "../../components/quixx/NumberBox";
 import Score from "../../components/quixx/Score";
 import { main } from "../../components/quixx/games";
 
+const colors = [
+  {
+    value: "text-cyan-500",
+    label: "Cyan",
+  },
+  {
+    value: "text-purple-500",
+    label: "Purple",
+  },
+  {
+    value: "text-rose-500",
+    label: "Pink",
+  },
+  {
+    value: "text-amber-500",
+    label: "Yellow",
+  },
+];
+
 const Home: NextPage = () => {
-  const [marker, setMarker] = useState(
-    <RocketLaunchIcon className="text-cyan-500" />
-  );
+  const [markerInfo, setMarkerInfo] = useState("text-cyan-500");
+  const [marker, setMarker] = useState(<FireIcon className={markerInfo} />);
   const [selected, setSelected] = useState<number[]>([]);
   const [negatives, setNegatives] = useState<string[]>([]);
   const [gameInfo, setGameInfo] = useState(main);
@@ -21,6 +43,10 @@ const Home: NextPage = () => {
       ? setNegatives(negatives.filter((negative) => negative !== value))
       : setNegatives([...negatives, value]);
   };
+
+  useEffect(() => {
+    setMarker(<FireIcon className={markerInfo} />);
+  }, [markerInfo]);
 
   useEffect(() => {
     const tempInfo = gameInfo.map((item) => {
@@ -62,81 +88,139 @@ const Home: NextPage = () => {
       </Head>
       <main className="sm:min-w-screen m-0 h-full min-h-screen w-full min-w-fit flex-col bg-slate-500 p-3 sm:h-full sm:min-h-screen sm:w-full">
         <div className="my-auto mx-auto w-fit rounded bg-white/10 p-5">
-          <div className="flex flex-col gap-1 overflow-x-auto rounded bg-white/80 p-5">
-            <div className="flex flex-row gap-1">
+          <div className="flex flex-col gap-0 overflow-x-auto rounded bg-white/80 p-5">
+            <div className="flex flex-row gap-0">
               {gameInfo
                 .filter((box) => box.row === 1)
-                .map((item) => (
-                  <NumberBox
-                    disabled={
-                      disabledCheck(item.id, item.row) &&
-                      item.selected === false
+                .map((item, i) => (
+                  <div
+                    className={
+                      i === 10
+                        ? "rounded-tl-xl border-l-2 border-t-2 border-slate-900 p-1"
+                        : i === 11
+                        ? "rounded-tr-xl border-r-2 border-t-2 border-slate-900 p-1"
+                        : "p-1"
                     }
                     key={item.id}
-                    color={item.color}
-                    number={item.num}
-                    selected={item.selected}
-                    icon={marker}
-                    onClick={() => handleBoxClick(item.id)}
-                  />
+                  >
+                    <NumberBox
+                      disabled={
+                        disabledCheck(item.id, item.row) &&
+                        item.selected === false
+                      }
+                      key={item.id}
+                      color={item.color}
+                      number={item.num}
+                      selected={item.selected}
+                      icon={marker}
+                      onClick={() => handleBoxClick(item.id)}
+                    />
+                  </div>
                 ))}
             </div>
-            <div className="flex flex-row gap-1">
+            <div className="flex flex-row gap-0">
               {gameInfo
                 .filter((box) => box.row === 2)
-                .map((item) => (
-                  <NumberBox
-                    disabled={
-                      disabledCheck(item.id, item.row) &&
-                      item.selected === false
+                .map((item, i) => (
+                  <div
+                    className={
+                      i === 10
+                        ? "border-l-2 border-slate-900 p-1"
+                        : i === 11
+                        ? "border-r-2 border-slate-900 p-1"
+                        : "p-1"
                     }
                     key={item.id}
-                    color={item.color}
-                    number={item.num}
-                    selected={item.selected}
-                    icon={marker}
-                    onClick={() => handleBoxClick(item.id)}
-                  />
+                  >
+                    <NumberBox
+                      disabled={
+                        disabledCheck(item.id, item.row) &&
+                        item.selected === false
+                      }
+                      color={item.color}
+                      number={item.num}
+                      selected={item.selected}
+                      icon={marker}
+                      onClick={() => handleBoxClick(item.id)}
+                    />
+                  </div>
                 ))}
             </div>
-            <div className="flex flex-row gap-1">
+            <div className="flex flex-row gap-0">
               {gameInfo
                 .filter((box) => box.row === 3)
-                .map((item) => (
-                  <NumberBox
-                    disabled={
-                      disabledCheck(item.id, item.row) &&
-                      item.selected === false
+                .map((item, i) => (
+                  <div
+                    className={
+                      i === 10
+                        ? "border-l-2 border-slate-900 p-1"
+                        : i === 11
+                        ? "border-r-2 border-slate-900 p-1"
+                        : "p-1"
                     }
                     key={item.id}
-                    color={item.color}
-                    number={item.num}
-                    selected={item.selected}
-                    icon={marker}
-                    onClick={() => handleBoxClick(item.id)}
-                  />
+                  >
+                    <NumberBox
+                      disabled={
+                        disabledCheck(item.id, item.row) &&
+                        item.selected === false
+                      }
+                      color={item.color}
+                      number={item.num}
+                      selected={item.selected}
+                      icon={marker}
+                      onClick={() => handleBoxClick(item.id)}
+                    />
+                  </div>
                 ))}
             </div>
-            <div className="flex flex-row gap-1">
+            <div className="flex flex-row gap-0">
               {gameInfo
                 .filter((box) => box.row === 4)
-                .map((item) => (
-                  <NumberBox
-                    disabled={
-                      disabledCheck(item.id, item.row) &&
-                      item.selected === false
+                .map((item, i) => (
+                  <div
+                    className={
+                      i === 10
+                        ? "rounded-bl-xl border-l-2 border-b-2 border-slate-900 p-1"
+                        : i === 11
+                        ? "rounded-br-xl border-r-2 border-b-2 border-slate-900 p-1"
+                        : "p-1"
                     }
                     key={item.id}
-                    color={item.color}
-                    number={item.num}
-                    selected={item.selected}
-                    icon={marker}
-                    onClick={() => handleBoxClick(item.id)}
-                  />
+                  >
+                    <NumberBox
+                      disabled={
+                        disabledCheck(item.id, item.row) &&
+                        item.selected === false
+                      }
+                      color={item.color}
+                      number={item.num}
+                      selected={item.selected}
+                      icon={marker}
+                      onClick={() => handleBoxClick(item.id)}
+                    />
+                  </div>
                 ))}
             </div>
-            <div className="m-2 flex justify-end p-1">
-              <div className="col-span-4 flex flex-row gap-2 rounded-xl border border-slate-600 p-3">
+            <div className="m-2 flex justify-between p-1">
+              <Score
+                scores={{
+                  first: gameInfo.filter(
+                    (item) => item.row === 1 && item.selected === true
+                  ).length,
+                  second: gameInfo.filter(
+                    (item) => item.row === 2 && item.selected === true
+                  ).length,
+                  third: gameInfo.filter(
+                    (item) => item.row === 3 && item.selected === true
+                  ).length,
+                  fourth: gameInfo.filter(
+                    (item) => item.row === 4 && item.selected === true
+                  ).length,
+                  negative: negatives.length,
+                }}
+              />
+              <div className="col-span-4 flex flex-row gap-2 rounded-xl border-2 border-slate-600 px-3 py-5">
                 <input
                   value={"first"}
                   onChange={(e) => handleNegativeCheck(e.target.value)}
@@ -169,23 +253,17 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className="mx-auto mt-3 rounded bg-white/80 p-5">
-            <Score
-              scores={{
-                first: gameInfo.filter(
-                  (item) => item.row === 1 && item.selected === true
-                ).length,
-                second: gameInfo.filter(
-                  (item) => item.row === 2 && item.selected === true
-                ).length,
-                third: gameInfo.filter(
-                  (item) => item.row === 3 && item.selected === true
-                ).length,
-                fourth: gameInfo.filter(
-                  (item) => item.row === 4 && item.selected === true
-                ).length,
-                negative: negatives.length,
-              }}
-            />
+            <select
+              defaultValue={"text-cyan-500"}
+              className="w-full rounded p-2"
+              onChange={(e) => setMarkerInfo(e.target.value)}
+            >
+              {colors.map((color, i) => (
+                <option key={i} value={color.value}>
+                  {color.label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </main>

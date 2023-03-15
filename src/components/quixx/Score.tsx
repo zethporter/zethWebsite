@@ -89,7 +89,7 @@ const Score = ({
   };
 }) => {
   return (
-    <div className="flex h-20 w-full flex-row">
+    <div className="flex h-20 flex-row">
       <div className="w-20 rounded-xl border-4 border-red-600 bg-white p-2 text-center text-4xl">
         <p className="p-2">{getScore(scores.first)}</p>
       </div>
@@ -120,7 +120,7 @@ const Score = ({
       <svg className="mx-2 w-9 fill-slate-600 stroke-slate-600">
         <Bars2Icon />
       </svg>
-      <div className="w-40 rounded-xl border-4 border-purple-600 bg-white p-2 text-center text-4xl">
+      <div className="w-32 rounded-xl border-4 border-purple-600 bg-white p-2 text-center text-4xl">
         <p className="p-2">{finalScore(scores)}</p>
       </div>
     </div>
