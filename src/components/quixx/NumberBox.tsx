@@ -1,6 +1,3 @@
-import { RocketLaunchIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { Component } from "react";
-
 const colors = {
   red: {
     classes:
@@ -44,26 +41,9 @@ const BlueBox = ({
   selected: boolean;
   disabled: boolean;
 }) => {
-  let innerClass = "";
-  let outerClass = "";
-  switch (color) {
-    case "red":
-      innerClass = colors.red.classes;
-      outerClass = colors.red.outer;
-      break;
-    case "yellow":
-      innerClass = colors.yellow.classes;
-      outerClass = colors.yellow.outer;
-      break;
-    case "green":
-      innerClass = colors.green.classes;
-      outerClass = colors.green.outer;
-      break;
-    case "blue":
-      innerClass = colors.blue.classes;
-      outerClass = colors.blue.outer;
-      break;
-  }
+  const innerClass = colors[color as keyof typeof colors].classes;
+  const outerClass = colors[color as keyof typeof colors].outer;
+
   if (disabled) {
     return (
       <div className={colors.disabled.outer}>
@@ -81,7 +61,7 @@ const BlueBox = ({
           {selected ? (
             icon
           ) : (
-            <p className="m-1 p-2 text-center text-4xl hover:animate-bounce sm:m-0">
+            <p className="m-1 p-2 text-center text-4xl text-black sm:m-0">
               {number}
             </p>
           )}

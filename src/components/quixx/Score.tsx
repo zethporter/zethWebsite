@@ -90,37 +90,37 @@ const Score = ({
 }) => {
   return (
     <div className="flex h-20 flex-row">
-      <div className="w-20 rounded-xl border-4 border-red-600 bg-white p-2 text-center text-4xl">
+      <div className="w-20 rounded-xl border-4 border-red-600 bg-white p-2 text-center text-4xl text-black">
         <p className="p-2">{getScore(scores.first)}</p>
       </div>
       <svg className="w-9 fill-slate-600 stroke-slate-600">
         <PlusIcon />
       </svg>
-      <div className="w-20 rounded-xl border-4 border-yellow-400 bg-white p-2 text-center text-4xl">
+      <div className="w-20 rounded-xl border-4 border-yellow-400 bg-white p-2 text-center text-4xl text-black">
         <p className="p-2">{getScore(scores.second)}</p>
       </div>
       <svg className="w-9 fill-slate-600 stroke-slate-600">
         <PlusIcon />
       </svg>
-      <div className="w-20 rounded-xl border-4 border-green-600 bg-white p-2 text-center text-4xl">
+      <div className="w-20 rounded-xl border-4 border-green-600 bg-white p-2 text-center text-4xl text-black">
         <p className="p-2">{getScore(scores.third)}</p>
       </div>
       <svg className="w-9 fill-slate-600 stroke-slate-600">
         <PlusIcon />
       </svg>
-      <div className="w-20 rounded-xl border-4 border-blue-600 bg-white p-2 text-center text-4xl">
+      <div className="w-20 rounded-xl border-4 border-blue-600 bg-white p-2 text-center text-4xl text-black">
         <p className="p-2">{getScore(scores.fourth)}</p>
       </div>
       <svg className="w-9 fill-slate-600 stroke-slate-600">
         <MinusIcon />
       </svg>
-      <div className="w-20 rounded-xl border-4 border-slate-600 bg-white p-2 text-center text-4xl">
+      <div className="w-20 rounded-xl border-4 border-slate-600 bg-white p-2 text-center text-4xl text-black">
         <p className="p-2">{scores.negative * 5}</p>
       </div>
       <svg className="mx-2 w-9 fill-slate-600 stroke-slate-600">
         <Bars2Icon />
       </svg>
-      <div className="w-32 rounded-xl border-4 border-purple-600 bg-white p-2 text-center text-4xl">
+      <div className="w-32 rounded-xl border-4 border-purple-600 bg-white p-2 text-center text-4xl text-black">
         <p className="p-2">{finalScore(scores)}</p>
       </div>
     </div>
