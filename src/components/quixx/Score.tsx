@@ -89,40 +89,30 @@ const Score = ({
   };
 }) => {
   return (
-    <div className="flex h-20 flex-row">
-      <div className="w-20 rounded-xl border-4 border-red-600 bg-white p-2 text-center text-4xl text-black">
-        <p className="p-2">{getScore(scores.first)}</p>
-      </div>
-      <svg className="w-9 fill-slate-600 stroke-slate-600">
-        <PlusIcon />
-      </svg>
-      <div className="w-20 rounded-xl border-4 border-yellow-400 bg-white p-2 text-center text-4xl text-black">
-        <p className="p-2">{getScore(scores.second)}</p>
-      </div>
-      <svg className="w-9 fill-slate-600 stroke-slate-600">
-        <PlusIcon />
-      </svg>
-      <div className="w-20 rounded-xl border-4 border-green-600 bg-white p-2 text-center text-4xl text-black">
-        <p className="p-2">{getScore(scores.third)}</p>
-      </div>
-      <svg className="w-9 fill-slate-600 stroke-slate-600">
-        <PlusIcon />
-      </svg>
-      <div className="w-20 rounded-xl border-4 border-blue-600 bg-white p-2 text-center text-4xl text-black">
-        <p className="p-2">{getScore(scores.fourth)}</p>
-      </div>
-      <svg className="w-9 fill-slate-600 stroke-slate-600">
-        <MinusIcon />
-      </svg>
-      <div className="w-20 rounded-xl border-4 border-slate-600 bg-white p-2 text-center text-4xl text-black">
-        <p className="p-2">{scores.negative * 5}</p>
-      </div>
-      <svg className="mx-2 w-9 fill-slate-600 stroke-slate-600">
-        <Bars2Icon />
-      </svg>
-      <div className="w-32 rounded-xl border-4 border-purple-600 bg-white p-2 text-center text-4xl text-black">
-        <p className="p-2">{finalScore(scores)}</p>
-      </div>
+    <div className="flex flex-1 flex-row justify-between">
+      <p className="self-center rounded border-2 border-red-600 bg-base-100 p-3 text-3xl">
+        {getScore(scores.first)}
+      </p>
+      <PlusIcon className="w-9 fill-slate-600 stroke-slate-600" />
+      <p className="self-center rounded border-2 border-yellow-600 bg-base-100 p-3 text-3xl">
+        {getScore(scores.second)}
+      </p>
+      <PlusIcon className="w-9 fill-slate-600 stroke-slate-600" />
+      <p className="self-center rounded border-2 border-green-600 bg-base-100 p-3 text-3xl">
+        {getScore(scores.third)}
+      </p>
+      <PlusIcon className="w-9 fill-slate-600 stroke-slate-600" />
+      <p className="self-center rounded border-2 border-blue-600 bg-base-100 p-3 text-3xl">
+        {getScore(scores.fourth)}
+      </p>
+      <MinusIcon className="w-9 fill-slate-600 stroke-slate-600" />
+      <p className="self-center rounded border-2 border-secondary bg-base-100 p-3 text-3xl">
+        {scores.negative * 5}
+      </p>
+      <Bars2Icon className="w-9 fill-slate-600 stroke-slate-600" />
+      <p className="self-center rounded border-2 border-primary bg-base-100 px-10 py-3 text-3xl">
+        {finalScore(scores)}
+      </p>
     </div>
   );
 };
