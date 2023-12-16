@@ -1,10 +1,8 @@
-import react, { SetStateAction } from "react";
-
 const IconModal = () => {
   return (
     <>
       <button
-        className="btn-primary btn"
+        className="btn btn-primary"
         onClick={() => {
           if (document) {
             (
@@ -19,7 +17,7 @@ const IconModal = () => {
         <form method="dialog" className="modal-box w-11/12 max-w-5xl">
           <div className="modal-action">
             {/* if there is a button in form, it will close the modal */}
-            <button className="btn-secondary btn">Close</button>
+            <button className="btn btn-secondary">Close</button>
           </div>
         </form>
       </dialog>

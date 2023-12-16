@@ -1,29 +1,12 @@
-const colors = {
-  red: {
-    classes:
-      "bg-red-300 cursor-pointer p-1 rounded-xl hover:ring-3 hover:ring-red-800 hover:bg-red-200 hover:animate-pulse",
-    outer: "w-20 col-span-1 p-2 rounded bg-red-600",
-  },
-  yellow: {
-    classes:
-      "bg-yellow-300 cursor-pointer p-1 rounded-xl hover:ring-3 hover:ring-yellow-800 hover:bg-yellow-200 hover:animate-pulse",
-    outer: "w-20 col-span-1 p-2 rounded bg-yellow-600",
-  },
-  green: {
-    classes:
-      "bg-green-300 cursor-pointer p-1 rounded-xl hover:ring-3 hover:ring-green-800 hover:bg-green-200 hover:animate-pulse",
-    outer: "w-20 col-span-1 p-2 rounded bg-green-600",
-  },
-  blue: {
-    classes:
-      "bg-blue-300 cursor-pointer p-1 rounded-xl hover:ring-3 hover:ring-blue-800 hover:bg-blue-200 hover:animate-pulse",
-    outer: "w-20 col-span-1 p-2 rounded bg-blue-600",
-  },
-  disabled: {
-    classes:
-      "bg-slate-300 cursor-pointer p-1 rounded-xl hover:ring-3 hover:ring-slate-800 hover:bg-slate-200",
-    outer: "w-20 col-span-1 p-2 rounded bg-slate-600",
-  },
+import clsx from "clsx";
+import { LockOpenIcon } from "@heroicons/react/24/solid";
+import { type ReactNode } from "react";
+
+const backgrounds = {
+  red: "bg-red-600",
+  yellow: "bg-yellow-600",
+  green: "bg-green-600",
+  blue: "bg-blue-600",
 };
 
 const BlueBox = ({
@@ -35,40 +18,38 @@ const BlueBox = ({
   disabled,
 }: {
   onClick?: React.MouseEventHandler;
-  number?: any;
-  icon?: any;
+  number?: string | number;
+  icon?: ReactNode;
   color: string;
   selected: boolean;
   disabled: boolean;
 }) => {
-  const innerClass = colors[color as keyof typeof colors].classes;
-  const outerClass = colors[color as keyof typeof colors].outer;
-
-  if (disabled) {
-    return (
-      <div className={colors.disabled.outer}>
-        <div className={colors.disabled.classes} onClick={onClick}>
-          <p className="m-1 p-2 text-center text-4xl sm:m-0 sm:text-4xl">
-            {number}
-          </p>
-        </div>
+  return (
+    <div
+      className={clsx(
+        "aspect-square w-full rounded-md p-2",
+        disabled
+          ? "bg-slate-600"
+          : backgrounds[color as keyof typeof backgrounds],
+      )}
+    >
+      <div
+        className={clsx(
+          "btn btn-ghost h-full w-full bg-white/20 p-2 text-center hover:shadow-2xl",
+          { "pointer-events-none": disabled },
+        )}
+        onClick={onClick}
+      >
+        {selected ? (
+          icon
+        ) : number === "lock" ? (
+          <LockOpenIcon className="stroke-base-100/10 text-secondary" />
+        ) : (
+          <p className="text-4xl text-black">{number}</p>
+        )}
       </div>
-    );
-  } else {
-    return (
-      <div className={outerClass}>
-        <div className={innerClass} onClick={onClick}>
-          {selected ? (
-            icon
-          ) : (
-            <p className="m-1 p-2 text-center text-4xl text-black sm:m-0">
-              {number}
-            </p>
-          )}
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default BlueBox;

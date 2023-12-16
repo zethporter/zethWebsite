@@ -1,12 +1,3 @@
-import {
-  RocketLaunchIcon,
-  LockOpenIcon,
-  LockClosedIcon,
-} from "@heroicons/react/24/solid";
-
-const Lock = () => {
-  return <LockOpenIcon />;
-};
 
 const main = [
   {
@@ -111,7 +102,7 @@ const main = [
   {
     color: "red",
     row: 1,
-    num: <Lock />,
+    num: "lock",
     prev: 11,
     id: 12,
     selected: false,
@@ -219,7 +210,7 @@ const main = [
   {
     color: "yellow",
     row: 2,
-    num: <Lock />,
+    num: "lock",
     prev: 23,
     id: 24,
     selected: false,
@@ -327,7 +318,7 @@ const main = [
   {
     color: "green",
     row: 3,
-    num: <Lock />,
+    num: "lock",
     prev: 35,
     id: 36,
     selected: false,
@@ -435,7 +426,7 @@ const main = [
   {
     color: "blue",
     row: 4,
-    num: <Lock />,
+    num: "lock",
     prev: 47,
     id: 48,
     selected: false,
