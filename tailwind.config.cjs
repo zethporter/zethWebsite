@@ -1,6 +1,32 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  safelist: [
+    {
+      pattern: /border-./,
+      variants: ["sm", "md", "lg", "xl"],
+    },
+    {
+      pattern: /bg-./,
+      variatns: ["sm", "md", "lg", "xl"],
+    },
+    {
+      pattern: /radio-./,
+      variants: ["sm", "md", "lg", "xl"],
+    },
+    {
+      pattern: /stroke-./,
+      variants: ["sm", "md", "lg", "xl"],
+    },
+    {
+      pattern: /font-./,
+      variants: ["sm", "md", "lg", "xl"],
+    },
+    {
+      pattern: /text-./,
+      variants: ["sm", "md", "lg", "xl"],
+    },
+  ],
   theme: {
     extend: {},
   },
@@ -8,7 +34,7 @@ module.exports = {
 
   // daisyUI config (optional - here are the default values)
   daisyui: {
-    themes: ['cupcake', 'dracula'], // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
+    themes: ["cupcake", "dracula"], // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
     darkTheme: "dracula", // name of one of the included themes for dark mode
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components
