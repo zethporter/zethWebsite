@@ -4,8 +4,10 @@ import { Controller } from "react-hook-form";
 import { useAtom, useAtomValue } from "jotai";
 import { rowCountsAtom, type blockType } from "../../pages/quixx";
 import { useWatch } from "react-hook-form";
+import { colors, icons } from "./IconModal";
 
 import { rowClosedAtom } from "../../pages/quixx";
+import { markerAtom } from "../../pages/quixx";
 
 const backgrounds = {
   red: "bg-red-600",
@@ -29,6 +31,7 @@ const NumberComponent = ({
   const [disableCheckers, setDisableCheckers] = useState<string[]>([]);
   const [rowCounts, setRowCounts] = useAtom(rowCountsAtom);
   const rowClosed = useAtomValue(rowClosedAtom);
+  const markerSettings = useAtomValue(markerAtom);
   const rowValues = useWatch({
     control,
     name: rowKey,
@@ -81,11 +84,23 @@ const NumberComponent = ({
                 }
               }}
               className={clsx(
-                "btn-xl btn-xl btn btn-square border-none bg-base-100/20 text-xl shadow-none outline-none hover:bg-base-100/50 hover:shadow-xl",
-                { "btn-disabled": disabled },
+                "btn-xl btn-xl btn btn-square border-none bg-base-100/20 text-2xl shadow-none outline-none hover:bg-base-100/50 hover:shadow-xl",
+                { "pointer-events-none text-base-content/30": disabled },
               )}
             >
-              {field.value ? "clicked" : data.num}
+              {field.value ? (
+                <svg
+                  className={clsx(
+                    "h-8 w-8 hover:bg-base-100/20",
+                    colors[markerSettings.fill as keyof typeof colors].text,
+                    colors[markerSettings.stroke as keyof typeof colors].stroke,
+                  )}
+                >
+                  {icons[markerSettings.icon as keyof typeof icons]}
+                </svg>
+              ) : (
+                data.num
+              )}
             </div>
           </div>
         );

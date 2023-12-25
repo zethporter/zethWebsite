@@ -1,36 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
-  safelist: [
-    {
-      pattern: /border-./,
-      variants: ["sm", "md", "lg", "xl"],
-    },
-    {
-      pattern: /bg-./,
-      variatns: ["sm", "md", "lg", "xl"],
-    },
-    {
-      pattern: /radio-./,
-      variants: ["sm", "md", "lg", "xl"],
-    },
-    {
-      pattern: /stroke-./,
-      variants: ["sm", "md", "lg", "xl"],
-    },
-    {
-      pattern: /font-./,
-      variants: ["sm", "md", "lg", "xl"],
-    },
-    {
-      pattern: /text-./,
-      variants: ["sm", "md", "lg", "xl"],
-    },
-  ],
   theme: {
     extend: {},
   },
-  plugins: [require("@tailwindcss/forms"), require("daisyui")],
+  plugins: [require("daisyui")],
 
   // daisyUI config (optional - here are the default values)
   daisyui: {
