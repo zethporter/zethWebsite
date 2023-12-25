@@ -1,117 +1,111 @@
+import { useState, useEffect } from "react";
+import { useWatch } from "react-hook-form";
 import { MinusIcon, PlusIcon, Bars2Icon } from "@heroicons/react/20/solid";
 
-const scoreBoard = [
-  {
-    count: 0,
-    score: 0,
-  },
-  {
-    count: 1,
-    score: 1,
-  },
-  {
-    count: 2,
-    score: 3,
-  },
-  {
-    count: 3,
-    score: 6,
-  },
-  {
-    count: 4,
-    score: 10,
-  },
-  {
-    count: 5,
-    score: 15,
-  },
-  {
-    count: 6,
-    score: 21,
-  },
-  {
-    count: 7,
-    score: 28,
-  },
-  {
-    count: 8,
-    score: 36,
-  },
-  {
-    count: 9,
-    score: 45,
-  },
-  {
-    count: 10,
-    score: 55,
-  },
-  {
-    count: 11,
-    score: 66,
-  },
-  {
-    count: 12,
-    score: 78,
-  },
+import { type rowType, type negatives } from "../../pages/quixx";
+
+const scoreBoard: Array<[number, number]> = [
+  [0, 0],
+  [1, 1],
+  [2, 3],
+  [3, 6],
+  [4, 10],
+  [5, 15],
+  [6, 21],
+  [7, 28],
+  [8, 36],
+  [9, 45],
+  [10, 55],
+  [11, 66],
+  [12, 78],
 ];
 
-const getScore = (count: number) => {
-  const score = scoreBoard.find((score) => score.count === count);
-  return score ? score.score : 0;
+type scoreCard = {
+  red: number;
+  yellow: number;
+  green: number;
+  blue: number;
+  negatives: number;
+  total: number;
 };
 
-const finalScore = (scores: {
-  first: number;
-  second: number;
-  third: number;
-  fourth: number;
-  negative: number;
-}) => {
-  const final =
-    getScore(scores.first) +
-    getScore(scores.second) +
-    getScore(scores.third) +
-    getScore(scores.fourth) +
-    scores.negative * -5;
+const rowScore = (row: rowType): number => {
+  const selectedRow = Object.keys(row).filter(
+    (block) => row[block as keyof typeof row].selected,
+  );
+  const score = scoreBoard.find((i) => i[0] === selectedRow.length);
 
-  return final;
+  return score !== undefined ? score[1] : 0;
+};
+
+const negativesTotal = (negatives: negatives): number => {
+  const totalNegatives = Object.keys(negatives).filter(
+    (key) => negatives[key as keyof typeof negatives] === true,
+  );
+  const negativesLength =
+    totalNegatives !== undefined ? totalNegatives.length : 0;
+  return negativesLength * 5;
 };
 
 const Score = ({
-  scores,
+  control,
 }: {
-  scores: {
-    first: number;
-    second: number;
-    third: number;
-    fourth: number;
-    negative: number;
-  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: any;
 }) => {
+  const [scores, setScores] = useState<scoreCard>({
+    red: 0,
+    yellow: 0,
+    green: 0,
+    blue: 0,
+    negatives: 0,
+    total: 0,
+  });
+  const gameData = useWatch({
+    control,
+  });
+
+  useEffect(() => {
+    const red = rowScore(gameData.red);
+    const yellow = rowScore(gameData.yellow);
+    const green = rowScore(gameData.green);
+    const blue = rowScore(gameData.blue);
+    const negatives = negativesTotal(gameData.negatives);
+    const total = red + yellow + green + blue - negatives;
+    setScores({
+      red: red !== undefined ? red : 0,
+      yellow: yellow !== undefined ? yellow : 0,
+      green: green !== undefined ? green : 0,
+      blue: blue !== undefined ? blue : 0,
+      negatives: negatives,
+      total: total,
+    });
+  }, [gameData]);
+
   return (
     <div className="flex flex-1 flex-row justify-between">
-      <p className="self-center rounded border-2 border-red-600 bg-base-100 p-3 text-3xl">
-        {getScore(scores.first)}
+      <p className="self-center rounded-2xl border-4 border-red-600 bg-base-100 p-3 text-3xl">
+        {scores.red}
       </p>
       <PlusIcon className="w-9 fill-slate-600 stroke-slate-600" />
-      <p className="self-center rounded border-2 border-yellow-600 bg-base-100 p-3 text-3xl">
-        {getScore(scores.second)}
+      <p className="self-center rounded-2xl border-4 border-yellow-600 bg-base-100 p-3 text-3xl">
+        {scores.yellow}
       </p>
       <PlusIcon className="w-9 fill-slate-600 stroke-slate-600" />
-      <p className="self-center rounded border-2 border-green-600 bg-base-100 p-3 text-3xl">
-        {getScore(scores.third)}
+      <p className="self-center rounded-2xl border-4 border-green-600 bg-base-100 p-3 text-3xl">
+        {scores.green}
       </p>
       <PlusIcon className="w-9 fill-slate-600 stroke-slate-600" />
-      <p className="self-center rounded border-2 border-blue-600 bg-base-100 p-3 text-3xl">
-        {getScore(scores.fourth)}
+      <p className="self-center rounded-2xl border-4 border-blue-600 bg-base-100 p-3 text-3xl">
+        {scores.blue}
       </p>
       <MinusIcon className="w-9 fill-slate-600 stroke-slate-600" />
-      <p className="self-center rounded border-2 border-secondary bg-base-100 p-3 text-3xl">
-        {scores.negative * 5}
+      <p className="self-center rounded-2xl border-4 border-secondary bg-base-100 p-3 text-3xl">
+        {scores.negatives}
       </p>
       <Bars2Icon className="w-9 fill-slate-600 stroke-slate-600" />
-      <p className="self-center rounded border-2 border-primary bg-base-100 px-10 py-3 text-3xl">
-        {finalScore(scores)}
+      <p className="self-center rounded-2xl border-4 border-primary bg-base-100 px-6 py-3 text-3xl">
+        {scores.total}
       </p>
     </div>
   );
