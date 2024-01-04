@@ -1,7 +1,8 @@
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
-import { useAtom } from "jotai";
+import { useSetAtom, useAtom } from "jotai";
 import { setCookie } from "cookies-next";
+import { games } from "./games";
 import {
   RocketLaunchIcon,
   CheckIcon,
@@ -20,7 +21,7 @@ import {
   AcademicCapIcon,
 } from "@heroicons/react/24/solid";
 
-import { markerAtom } from "../../pages/quixx";
+import { gameAtom, markerAtom } from "../../pages/quixx";
 
 export const colors = {
   "cyan-500": {
@@ -100,6 +101,7 @@ const Modal = ({
   handleClose: VoidFunction;
 }) => {
   const [markerSettings, setMarkerSettings] = useAtom(markerAtom);
+  const setGame = useSetAtom(gameAtom);
   const { handleSubmit, setValue, watch } = useForm({
     values: markerSettings,
   });
@@ -183,6 +185,22 @@ const Modal = ({
         >
           Save
         </div>
+        <div className="divider col-span-full">Board</div>
+        <select
+          onChange={(e) => {
+            setGame(games[e.target.value as keyof typeof games]);
+            setCookie("game", e.target.value, {
+              expires: new Date(Date.now() + 360 * 24 * 3600000),
+            });
+          }}
+          className="select select-primary col-span-full w-full"
+        >
+          {Object.keys(games).map((game, i) => (
+            <option key={i} value={game}>
+              {game}
+            </option>
+          ))}
+        </select>
       </form>
     </div>
   );
