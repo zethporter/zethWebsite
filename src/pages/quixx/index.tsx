@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { atom, useSetAtom } from "jotai";
+import { atom, useAtom, useSetAtom } from "jotai";
 import RowComponent from "../../components/quixx/RowComponent";
 import NegativeComponent from "../../components/quixx/NegativeComponent";
 import { getCookie, hasCookie } from "cookies-next";
 
 import Score from "../../components/quixx/Score";
-import { main } from "../../components/quixx/games";
+import { games } from "../../components/quixx/games";
 import IconModal from "../../components/quixx/IconModal";
 
 export const markerAtom = atom({
@@ -16,6 +16,8 @@ export const markerAtom = atom({
   fill: "primary",
   stroke: "primary",
 });
+
+export const gameAtom = atom(games.main);
 
 export type blockType = {
   color: string;
@@ -72,16 +74,21 @@ export const rowClosedAtom = atom({
 });
 
 const Home: NextPage = () => {
+  const [game, setGame] = useAtom(gameAtom);
   const setMarker = useSetAtom(markerAtom);
   const [iconModal, setIconModal] = useState(false);
   const { control, handleSubmit } = useForm<FormValues>({
-    defaultValues: main,
+    defaultValues: game,
   });
 
   useEffect(() => {
     if (hasCookie("markerSettings")) {
       const markerSettings = JSON.parse(getCookie("markerSettings")!);
       setMarker(markerSettings);
+    }
+    if (hasCookie("game")) {
+      const game = games[getCookie("game") as keyof typeof games];
+      setGame(game);
     }
   }, []);
 
@@ -98,21 +105,21 @@ const Home: NextPage = () => {
       <main className="h-screen w-full overflow-y-auto bg-base-300 p-2">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2 overflow-auto scroll-smooth rounded-box bg-base-100 p-2">
-            <RowComponent rowKey={"red"} control={control} rowData={main.red} />
+            <RowComponent rowKey={"red"} control={control} rowData={game.red} />
             <RowComponent
               rowKey={"yellow"}
               control={control}
-              rowData={main.yellow}
+              rowData={game.yellow}
             />
             <RowComponent
               rowKey={"green"}
               control={control}
-              rowData={main.green}
+              rowData={game.green}
             />
             <RowComponent
               rowKey={"blue"}
               control={control}
-              rowData={main.blue}
+              rowData={game.blue}
             />
           </div>
           <div className="flex flex-row gap-2 overflow-y-auto rounded-box bg-base-200 p-2">
