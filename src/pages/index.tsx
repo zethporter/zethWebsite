@@ -14,7 +14,7 @@ const Home: NextPage = () => {
         <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-cyan-950/50 to-purple-950/50">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
             <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-              <span className="text-cyan-300">Zeth</span>{" "}
+              <span className="text-cyan-300 drop-shadow-md">Zeth</span>{" "}
               <span className="text-purple-300">Porter</span>
             </h1>
             <div className="grid grid-cols-2 gap-4">
