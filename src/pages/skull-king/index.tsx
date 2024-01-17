@@ -8,8 +8,8 @@ import {
 import ky from "ky";
 import { useQuery } from "@tanstack/react-query";
 
-const userQueryFunction = async (userId: string | null) => {
-  const res = await ky.get(`/api/user/${userId}`);
+const userQueryFunction = async () => {
+  const res = await ky.get(`/api/user`);
   if (!res.ok) {
     throw new Error("Network response was not ok");
   }
@@ -20,7 +20,7 @@ const SkullKing = () => {
   const { user, isLoaded } = useUser();
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["todos"],
-    queryFn: () => userQueryFunction(user ? user.id : ""),
+    queryFn: () => userQueryFunction(),
     enabled: isLoaded,
   });
 
