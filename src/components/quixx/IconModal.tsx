@@ -21,7 +21,7 @@ import {
   AcademicCapIcon,
 } from "@heroicons/react/24/solid";
 
-import { gameAtom, markerAtom } from "../../pages/quixx";
+import { gameAtom, markerAtom } from "../../pages/zicks";
 
 export const colors = {
   "cyan-500": {

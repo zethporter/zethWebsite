@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Controller } from "react-hook-form";
 import { useAtom, useAtomValue } from "jotai";
-import { rowCountsAtom, type blockType } from "../../pages/quixx";
+import { rowCountsAtom, type blockType } from "../../pages/zicks";
 import { useWatch } from "react-hook-form";
 import { colors, icons } from "./IconModal";
 
-import { rowClosedAtom } from "../../pages/quixx";
-import { markerAtom } from "../../pages/quixx";
+import { rowClosedAtom } from "../../pages/zicks";
+import { markerAtom } from "../../pages/zicks";
 
 const backgrounds = {
   red: "bg-red-600",

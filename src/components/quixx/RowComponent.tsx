@@ -1,10 +1,10 @@
 import { useAtom } from "jotai";
 import clsx from "clsx";
 import NumberComponent from "./NumberComponent";
-import { type rowType } from "../../pages/quixx";
+import { type rowType } from "../../pages/zicks";
 import { LockOpenIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 
-import { rowClosedAtom } from "../../pages/quixx";
+import { rowClosedAtom } from "../../pages/zicks";
 
 const RowComponent = ({
   rowData,

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useWatch } from "react-hook-form";
 import { MinusIcon, PlusIcon, Bars2Icon } from "@heroicons/react/20/solid";
 
-import { type rowType, type negatives } from "../../pages/quixx";
+import { type rowType, type negatives } from "../../pages/zicks";
 
 const scoreBoard: Array<[number, number]> = [
   [0, 0],
