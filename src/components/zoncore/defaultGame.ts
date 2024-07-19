@@ -1,5 +1,30 @@
 import { z } from "zod";
 
+export const wildsZod = z
+  .object({
+    available: z.number(),
+    selected: z.number(),
+  })
+  .transform((val, ctx) => {
+    if (val.available + val.selected !== 8) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Sum of available and selected must equal 8.",
+      });
+
+      // This is a special symbol you can use to
+      // return early from the transform function.
+      // It has type `never` so it does not affect the
+      // inferred return type.
+      return z.NEVER;
+    }
+    return val;
+  });
+
+export type wildsObject = z.infer<typeof wildsZod>;
+
+export const defaultWilds = { available: 8, selected: 0 };
+
 export const cellZod = z.record(
   z.string(),
   z.object({
@@ -28,6 +53,10 @@ export const defaultGame = {
     maxPoints: 5,
     marked: "none",
     rowCompleted: false,
+    wilds: {
+      available: 8,
+      selected: 0,
+    },
     cells: {
       0: {
         color: "green",

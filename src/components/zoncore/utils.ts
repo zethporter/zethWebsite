@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { type boardObject } from "./defaultGame";
+import { defaultGame, type boardObject, boardZod, type wildsObject, defaultWilds } from "./defaultGame";
 
 const z_surroundingCells = z.array(z.tuple([z.string(), z.number()]));
 type t_surroundingCells = z.infer<typeof z_surroundingCells>;
@@ -97,4 +97,9 @@ export const handleColCompleteClick = (
       ? (newBoard[col]!.marked = "none")
       : (newBoard[col]!.marked = marked);
   setBoard(newBoard);
+};
+
+export const resetGame = (setBoard: (e: boardObject) => void, setWilds: (e: wildsObject) => void) => {
+  setBoard(boardZod.parse(defaultGame));
+  setWilds(defaultWilds);
 };
