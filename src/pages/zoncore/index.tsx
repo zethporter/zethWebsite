@@ -26,7 +26,7 @@ import {
   handleColCompleteClick,
   resetGame,
 } from "../../components/zoncore/utils";
-import WildSelector from "./WildSelector";
+import WildSelector from "../../components/zoncore/WildSelector";
 
 const currentGameAtom = atomWithStorage<boardObject>(
   "currentZoncoreGame",

@@ -1,5 +1,4 @@
-import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
+
 import { type wildsObject } from "../../components/zoncore/defaultGame";
 
 const WildSelector = ({
