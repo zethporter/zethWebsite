@@ -83,23 +83,23 @@ const Zoncore = () => {
   const [board, setBoard] = useAtom(currentGameAtom);
   const [wilds, setWilds] = useAtom(currentWilds);
   return (
-    <TransformWrapper centerOnInit={true} minScale={0.1} maxScale={4} doubleClick={{ disabled: true }}>
-      <TransformComponent wrapperClass="bg-base-300 p-10" wrapperStyle={{ height: '100vh', width: '100%' }} contentClass="bg-transparent p-5">
+    <TransformWrapper disablePadding={true} centerOnInit={true} minScale={0.1} maxScale={4} doubleClick={{ disabled: true }}>
+      <TransformComponent wrapperClass="bg-base-300 p-10 " wrapperStyle={{ height: '100vh', width: '100%' }} contentClass="bg-transparent p-5 ">
         <div
           className={clsx(
             `font-sans ${gluten.className}`,
-            "flex flex-row flex-wrap justify-center gap-2",
+            "flex flex-row flex-wrap justify-center gap-2 ",
           )}
         >
-          <div className="flex flex-row justify-center gap-1 rounded-btn bg-base-200">
+          <div className="flex flex-row justify-center gap-1 rounded-btn bg-base-200 ">
             {Object.keys(board).map((key, i) => (
-              <div className="flex flex-col gap-1" key={key + i}>
+              <div className="flex flex-col gap-1 " key={key + i}>
                 <button
                   type="button"
                   onClick={() => handleColHeaderClick(board, key, setBoard)}
                   className={twMerge(
                     clsx(
-                      "btn btn-square btn-neutral mb-2 pt-1 bg-neutral-300 align-middle text-4xl capitalize text-neutral-900 hover:bg-neutral-400",
+                      " btn btn-square btn-neutral mb-2 pt-1 bg-neutral-300 align-middle text-4xl capitalize text-neutral-900 hover:bg-neutral-400",
                       key === "h" && "text-red-700",
                     ),
                   )}
@@ -115,20 +115,20 @@ const Zoncore = () => {
                       disabled={!cell.clickable}
                       onClick={() => handleCellClick(board, [key, j], setBoard)}
                       className={clsx(
-                        "btn btn-square",
+                        "btn btn-square ",
                         colors[cell.color] ?? "bg-primary",
                       )}
                     >
                       {cell.star ? (
                         cell.selected ? (
-                          <SparklesIcon className="fill-primary stroke-neutral-100" />
+                          <SparklesIcon className="fill-primary stroke-neutral-100 " />
                         ) : (
-                          <StarIcon />
+                          <StarIcon className='' />
                         )
                       ) : cell.selected ? (
-                        <XCircleIcon className="fill-secondary stroke-neutral-100" />
+                        <XCircleIcon className="fill-secondary stroke-neutral-100 " />
                       ) : (
-                        <MinusCircleIcon />
+                        <MinusCircleIcon className='' />
                       )}
                     </button>
                   );
@@ -138,7 +138,7 @@ const Zoncore = () => {
                     board[key]!.rowCompleted || board[key]!.marked === "min"
                   }
                   className={clsx(
-                    "mt-2",
+                    "mt-2 ",
                     key === "h" && "text-red-700",
                     board[key]!.marked === "max" && "bg-accent",
                   )}
@@ -163,14 +163,14 @@ const Zoncore = () => {
               </div>
             ))}
           </div>
-          <div className="flex h-5 w-full justify-center">
+          <div className="flex h-5 w-full justify-center ">
             <span id="columnConfetti" />
           </div>
           <WildSelector wilds={wilds} setWilds={setWilds} />
           <button
             type="button"
             onClick={() => resetGame(setBoard, setWilds)}
-            className="btn btn-accent"
+            className="btn btn-accent "
           >
             Reset
           </button>
