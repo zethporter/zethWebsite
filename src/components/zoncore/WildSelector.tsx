@@ -9,7 +9,7 @@ const WildSelector = ({
   setWilds: (e: wildsObject) => void;
 }) => {
   return (
-    <div className="p-4 w-full rounded-box bg-base-200 flex flex-row gap-2 justify-center">
+    <div className="p-4 w-full rounded-box bg-transparent flex flex-row gap-2 justify-center">
       <div className='btn-square pt-1 flex justify-center items-center rounded-btn bg-black text-white text-3xl font-extrabold'>?</div>
       <span className='text-4xl font-extrabold self-center'>/</span>
       <div className='btn-square flex pt-1 justify-center items-center rounded-btn bg-white text-black text-3xl font-extrabold'>X</div>

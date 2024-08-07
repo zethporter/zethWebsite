@@ -5,7 +5,7 @@ import {
   StarIcon,
   SparklesIcon,
   MinusCircleIcon,
-  XCircleIcon,
+  CheckCircleIcon,
 } from "@heroicons/react/24/solid";
 import { Gluten } from "next/font/google";
 import { useAtom } from "jotai";
@@ -79,11 +79,11 @@ const MinMaxButton = ({
   );
 };
 
-const Zoncore = () => {
+const Board = () => {
   const [board, setBoard] = useAtom(currentGameAtom);
   const [wilds, setWilds] = useAtom(currentWilds);
   return (
-    <TransformWrapper disablePadding={true} centerOnInit={true} minScale={0.1} maxScale={4} doubleClick={{ disabled: true }}>
+    <TransformWrapper disablePadding={true} centerOnInit={true} minScale={0.4} maxScale={7} doubleClick={{ disabled: true }}>
       <TransformComponent wrapperClass="bg-base-300 p-10 " wrapperStyle={{ height: '100vh', width: '100%' }} contentClass="bg-transparent p-5 ">
         <div
           className={clsx(
@@ -94,44 +94,50 @@ const Zoncore = () => {
           <div className="flex flex-row justify-center gap-1 rounded-btn bg-base-200 ">
             {Object.keys(board).map((key, i) => (
               <div className="flex flex-col gap-1 " key={key + i}>
-                <button
-                  type="button"
+                <div
                   onClick={() => handleColHeaderClick(board, key, setBoard)}
                   className={twMerge(
                     clsx(
-                      " btn btn-square btn-neutral mb-2 pt-1 bg-neutral-300 align-middle text-4xl capitalize text-neutral-900 hover:bg-neutral-400",
+                      "flex justify-center mb-2 rounded-btn pt-1 bg-base-content align-middle text-4xl capitalize text-base-100 font-semibold",
                       key === "h" && "text-red-700",
                     ),
                   )}
                 >
                   {key}
-                </button>
+                </div>
                 {Object.keys(board[key]!.cells).map((cellKey, j) => {
                   const cell = board[key]!.cells[cellKey]!;
                   return (
-                    <button
-                      type="button"
-                      key={key + cellKey}
-                      disabled={!cell.clickable}
-                      onClick={() => handleCellClick(board, [key, j], setBoard)}
-                      className={clsx(
-                        "btn btn-square ",
-                        colors[cell.color] ?? "bg-primary",
-                      )}
-                    >
-                      {cell.star ? (
-                        cell.selected ? (
-                          <SparklesIcon className="fill-primary stroke-neutral-100 " />
-                        ) : (
-                          <StarIcon className='' />
-                        )
-                      ) : cell.selected ? (
-                        <XCircleIcon className="fill-secondary stroke-neutral-100 " />
-                      ) : (
-                        <MinusCircleIcon className='' />
-                      )}
-                    </button>
-                  );
+                    cell.star ?
+                      <button
+                        type='button'
+                        disabled={!cell.clickable}
+                        key={key + cellKey}
+                        onClick={() => handleCellClick(board, [key, j], setBoard)}
+                        className={clsx(
+                          "btn btn-square swap swap-rotate",
+                          colors[cell.color] ?? "bg-primary",
+                          cell.selected && "swap-active"
+                        )}
+                      >
+                        <SparklesIcon className='h-10 w-10 fill-primary stroke-primary-content swap-on' />
+                        <StarIcon className={twMerge('h-10 w-10 swap-off', cell.clickable ? 'fill-base-content stroke-base-300' : 'fill-base-content/40')} />
+                      </button>
+                      : <button
+                        type='button'
+                        disabled={!cell.clickable}
+                        key={key + cellKey}
+                        onClick={() => handleCellClick(board, [key, j], setBoard)}
+                        className={clsx(
+                          "btn btn-square swap swap-rotate",
+                          colors[cell.color] ?? "bg-primary",
+                          cell.selected && "swap-active"
+                        )}
+                      >
+                        <CheckCircleIcon className='h-10 w-10 swap-on fill-secondary stroke-secondary-content' />
+                        <MinusCircleIcon className={twMerge('h-10 w-10 swap-off', cell.clickable ? 'fill-base-content stroke-base-300' : 'fill-base-content/40')} />
+                      </button>
+                  )
                 })}
                 <MinMaxButton
                   disabled={
@@ -148,18 +154,19 @@ const Zoncore = () => {
                     handleColCompleteClick(board, key, "max", setBoard)
                   }
                 />
-                <MinMaxButton
-                  disabled={board[key]!.marked === "max"}
+                <div
                   className={clsx(
-                    key === "h" && "text-red-700",
-                    board[key]!.marked === "min" && "bg-accent",
+                    "flex justify-center mb-2 rounded-btn pt-1 bg-base-content align-middle font-semibold text-4xl capitalize text-base-100",
+                    key === "h" ? "text-red-700" : 'text-base-100',
+                    board[key]!.marked === "min" ? "bg-accent" : "bg-base-content",
                   )}
-                  points={board[key]!.minPoints}
                   key={key + "min"}
                   onClick={() =>
                     handleColCompleteClick(board, key, "min", setBoard)
                   }
-                />
+                >
+                  {board[key]!.minPoints}
+                </div>
               </div>
             ))}
           </div>
@@ -180,4 +187,11 @@ const Zoncore = () => {
   );
 };
 
+const Zoncore = () => {
+  return (
+    <main data-theme={'dark'}>
+      <Board />
+    </main>
+  )
+};
 export default Zoncore;
