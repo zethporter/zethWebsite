@@ -69,7 +69,7 @@ const MinMaxButton = ({
       onClickCapture={reward}
       className={twMerge(
         clsx(
-          "btn btn-square btn-neutral pt-1 bg-neutral-300 align-middle text-4xl text-neutral-900 hover:bg-neutral-400",
+          "btn btn-square btn-neutral bg-neutral-300 pt-1 align-middle text-4xl text-neutral-900 hover:bg-neutral-400",
           className,
         ),
       )}
@@ -83,8 +83,18 @@ const Board = () => {
   const [board, setBoard] = useAtom(currentGameAtom);
   const [wilds, setWilds] = useAtom(currentWilds);
   return (
-    <TransformWrapper disablePadding={true} centerOnInit={true} minScale={0.4} maxScale={7} doubleClick={{ disabled: true }}>
-      <TransformComponent wrapperClass="bg-base-300 p-10 " wrapperStyle={{ height: '100vh', width: '100%' }} contentClass="bg-transparent p-5 ">
+    <TransformWrapper
+      disablePadding={true}
+      centerOnInit={true}
+      minScale={0.4}
+      maxScale={7}
+      doubleClick={{ disabled: true }}
+    >
+      <TransformComponent
+        wrapperClass="bg-base-300 p-10 "
+        wrapperStyle={{ height: "100vh", width: "100%" }}
+        contentClass="bg-transparent p-5 "
+      >
         <div
           className={clsx(
             `font-sans ${gluten.className}`,
@@ -98,7 +108,7 @@ const Board = () => {
                   onClick={() => handleColHeaderClick(board, key, setBoard)}
                   className={twMerge(
                     clsx(
-                      "flex justify-center mb-2 rounded-btn pt-1 bg-base-content align-middle text-4xl capitalize text-base-100 font-semibold",
+                      "mb-2 flex justify-center rounded-btn bg-base-content pt-1 align-middle text-4xl font-semibold capitalize text-base-100",
                       key === "h" && "text-red-700",
                     ),
                   )}
@@ -107,44 +117,58 @@ const Board = () => {
                 </div>
                 {Object.keys(board[key]!.cells).map((cellKey, j) => {
                   const cell = board[key]!.cells[cellKey]!;
-                  return (
-                    cell.star ?
-                      <button
-                        type='button'
-                        disabled={!cell.clickable}
-                        key={key + cellKey}
-                        onClick={() => handleCellClick(board, [key, j], setBoard)}
-                        className={clsx(
-                          "btn btn-square swap swap-rotate",
-                          colors[cell.color] ?? "bg-primary",
-                          cell.selected && "swap-active"
+                  return cell.star ? (
+                    <button
+                      type="button"
+                      disabled={!cell.clickable}
+                      key={key + cellKey}
+                      onClick={() => handleCellClick(board, [key, j], setBoard)}
+                      className={clsx(
+                        "btn btn-square swap swap-rotate",
+                        colors[cell.color] ?? "bg-primary",
+                        cell.selected && "swap-active",
+                      )}
+                    >
+                      <SparklesIcon className="swap-on h-10 w-10 fill-primary stroke-primary-content" />
+                      <StarIcon
+                        className={twMerge(
+                          "swap-off h-10 w-10",
+                          cell.clickable
+                            ? "fill-base-content stroke-base-300"
+                            : "fill-base-content/40",
                         )}
-                      >
-                        <SparklesIcon className='h-10 w-10 fill-primary stroke-primary-content swap-on' />
-                        <StarIcon className={twMerge('h-10 w-10 swap-off', cell.clickable ? 'fill-base-content stroke-base-300' : 'fill-base-content/40')} />
-                      </button>
-                      : <button
-                        type='button'
-                        disabled={!cell.clickable}
-                        key={key + cellKey}
-                        onClick={() => handleCellClick(board, [key, j], setBoard)}
-                        className={clsx(
-                          "btn btn-square swap swap-rotate",
-                          colors[cell.color] ?? "bg-primary",
-                          cell.selected && "swap-active"
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={!cell.clickable}
+                      key={key + cellKey}
+                      onClick={() => handleCellClick(board, [key, j], setBoard)}
+                      className={clsx(
+                        "btn btn-square swap swap-rotate",
+                        colors[cell.color] ?? "bg-primary",
+                        cell.selected && "swap-active",
+                      )}
+                    >
+                      <CheckCircleIcon className="swap-on h-10 w-10 fill-secondary stroke-secondary-content" />
+                      <MinusCircleIcon
+                        className={twMerge(
+                          "swap-off h-10 w-10",
+                          cell.clickable
+                            ? "fill-base-content stroke-base-300"
+                            : "fill-base-content/40",
                         )}
-                      >
-                        <CheckCircleIcon className='h-10 w-10 swap-on fill-secondary stroke-secondary-content' />
-                        <MinusCircleIcon className={twMerge('h-10 w-10 swap-off', cell.clickable ? 'fill-base-content stroke-base-300' : 'fill-base-content/40')} />
-                      </button>
-                  )
+                      />
+                    </button>
+                  );
                 })}
                 <MinMaxButton
                   disabled={
                     board[key]!.rowCompleted || board[key]!.marked === "min"
                   }
                   className={clsx(
-                    "mt-2 ",
+                    "mt-2",
                     key === "h" && "text-red-700",
                     board[key]!.marked === "max" && "bg-accent",
                   )}
@@ -156,14 +180,17 @@ const Board = () => {
                 />
                 <div
                   className={clsx(
-                    "flex justify-center mb-2 rounded-btn pt-1 bg-base-content align-middle font-semibold text-4xl capitalize text-base-100",
-                    key === "h" ? "text-red-700" : 'text-base-100',
-                    board[key]!.marked === "min" ? "bg-accent" : "bg-base-content",
+                    "mb-2 flex justify-center rounded-btn bg-base-content pt-1 align-middle text-4xl font-semibold capitalize text-base-100",
+                    key === "h" ? "text-red-700" : "text-base-100",
+                    board[key]!.marked === "min"
+                      ? "bg-accent"
+                      : "bg-base-content",
                   )}
                   key={key + "min"}
                   onClick={() =>
                     handleColCompleteClick(board, key, "min", setBoard)
                   }
+                  fixed
                 >
                   {board[key]!.minPoints}
                 </div>
@@ -189,9 +216,9 @@ const Board = () => {
 
 const Zoncore = () => {
   return (
-    <main data-theme={'dark'}>
+    <main data-theme={"dark"}>
       <Board />
     </main>
-  )
+  );
 };
 export default Zoncore;
