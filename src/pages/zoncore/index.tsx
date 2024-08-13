@@ -26,7 +26,7 @@ import {
   handleColCompleteClick,
   resetGame,
 } from "../../components/zoncore/utils";
-import WildSelector from "../../components/zoncore/WildSelector";
+import { WildSelector, ColorsScore, Score } from "../../components/zoncore";
 
 const currentGameAtom = atomWithStorage<boardObject>(
   "currentZoncoreGame",
@@ -190,12 +190,15 @@ const Board = () => {
                   onClick={() =>
                     handleColCompleteClick(board, key, "min", setBoard)
                   }
-                  fixed
                 >
                   {board[key]!.minPoints}
                 </div>
               </div>
             ))}
+          </div>
+          <div className="flex flex-col gap-1">
+            <ColorsScore />
+            <Score />
           </div>
           <div className="flex h-5 w-full justify-center ">
             <span id="columnConfetti" />
