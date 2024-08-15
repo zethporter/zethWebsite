@@ -20,13 +20,13 @@ import {
   defaultWilds,
   wildsZod,
 } from "../../components/zoncore/defaultGame";
+import { handleCellClick, resetGame } from "../../components/zoncore/utils";
 import {
-  handleCellClick,
-  handleColHeaderClick,
-  handleColCompleteClick,
-  resetGame,
-} from "../../components/zoncore/utils";
-import { WildSelector, ColorsScore, Score } from "../../components/zoncore";
+  WildSelector,
+  ColorsScore,
+  Score,
+  MinMaxButtons,
+} from "../../components/zoncore";
 
 const currentGameAtom = atomWithStorage<boardObject>(
   "currentZoncoreGame",
@@ -47,36 +47,6 @@ const colors = {
   blue: "bg-blue-500 hover:bg-blue-700 disabled:bg-blue-500/60",
   orange: "bg-orange-500 hover:bg-orange-700 disabled:bg-orange-500/60",
   yellow: "bg-yellow-500 hover:bg-yellow-700 disabled:bg-yellow-500/60",
-};
-
-const MinMaxButton = ({
-  points,
-  className,
-  disabled,
-  onClick,
-}: {
-  points: number;
-  className?: string;
-  disabled?: boolean;
-  onClick?: () => void;
-}) => {
-  const { reward } = useReward("columnConfetti", "confetti");
-  return (
-    <button
-      disabled={disabled}
-      type="button"
-      onClick={onClick}
-      onClickCapture={reward}
-      className={twMerge(
-        clsx(
-          "btn btn-square btn-neutral bg-neutral-300 pt-1 align-middle text-4xl text-neutral-900 hover:bg-neutral-400",
-          className,
-        ),
-      )}
-    >
-      {points}
-    </button>
-  );
 };
 
 const Board = () => {
@@ -101,11 +71,10 @@ const Board = () => {
             "flex flex-row flex-wrap justify-center gap-2 ",
           )}
         >
-          <div className="flex flex-row justify-center gap-1 rounded-btn bg-base-200 ">
+          <div className="flex flex-row justify-center gap-1 rounded-btn">
             {Object.keys(board).map((key, i) => (
               <div className="flex flex-col gap-1 " key={key + i}>
                 <div
-                  onClick={() => handleColHeaderClick(board, key, setBoard)}
                   className={twMerge(
                     clsx(
                       "mb-2 flex justify-center rounded-btn bg-base-content pt-1 align-middle text-4xl font-semibold capitalize text-base-100",
@@ -163,36 +132,15 @@ const Board = () => {
                     </button>
                   );
                 })}
-                <MinMaxButton
-                  disabled={
-                    board[key]!.rowCompleted || board[key]!.marked === "min"
-                  }
-                  className={clsx(
-                    "mt-2",
-                    key === "h" && "text-red-700",
-                    board[key]!.marked === "max" && "bg-accent",
-                  )}
-                  points={board[key]!.maxPoints}
-                  key={key + "max"}
-                  onClick={() =>
-                    handleColCompleteClick(board, key, "max", setBoard)
-                  }
+                <MinMaxButtons
+                  board={board}
+                  col={key}
+                  minPoints={board[key]!.minPoints}
+                  maxPoints={board[key]!.maxPoints}
+                  maxAvailable={board[key]!.maxAvailable}
+                  colCompleted={board[key]!.colCompleted}
+                  setBoard={setBoard}
                 />
-                <div
-                  className={clsx(
-                    "mb-2 flex justify-center rounded-btn bg-base-content pt-1 align-middle text-4xl font-semibold capitalize text-base-100",
-                    key === "h" ? "text-red-700" : "text-base-100",
-                    board[key]!.marked === "min"
-                      ? "bg-accent"
-                      : "bg-base-content",
-                  )}
-                  key={key + "min"}
-                  onClick={() =>
-                    handleColCompleteClick(board, key, "min", setBoard)
-                  }
-                >
-                  {board[key]!.minPoints}
-                </div>
               </div>
             ))}
           </div>

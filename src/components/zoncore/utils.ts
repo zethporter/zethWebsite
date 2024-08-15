@@ -1,5 +1,11 @@
 import { z } from "zod";
-import { defaultGame, type boardObject, boardZod, type wildsObject, defaultWilds } from "./defaultGame";
+import {
+  defaultGame,
+  type boardObject,
+  boardZod,
+  type wildsObject,
+  defaultWilds,
+} from "./defaultGame";
 
 const z_surroundingCells = z.array(z.tuple([z.string(), z.number()]));
 type t_surroundingCells = z.infer<typeof z_surroundingCells>;
@@ -37,7 +43,11 @@ const getSurroundingCells = (_rowId: number, _colId: string) => {
 const clickableCheck = (board: boardObject) => {
   const newBoard = { ...board };
   Object.keys(newBoard).forEach((col) => {
+    let selectedCount = 0;
     Object.keys(newBoard[col]!.cells).forEach((row) => {
+      if (newBoard[col]!.cells[parseInt(row)]!.selected) {
+        selectedCount++;
+      }
       if (col === "h") {
         newBoard[col]!.cells[parseInt(row)]!.clickable = true;
       } else {
@@ -58,6 +68,11 @@ const clickableCheck = (board: boardObject) => {
         }
         newBoard[col]!.cells[parseInt(row)]!.clickable = clickable;
       }
+      if (selectedCount === 7) {
+        newBoard[col]!.colCompleted = true;
+      } else {
+        newBoard[col]!.colCompleted = false;
+      }
     });
   });
   return newBoard;
@@ -75,31 +90,20 @@ export const handleCellClick = (
   setBoard(clickableCheck(newBoard));
 };
 
-export const handleColHeaderClick = (
+export const toggleMaxAvailable = (
   board: boardObject,
   col: string,
   setBoard: (e: boardObject) => void,
 ) => {
   const newBoard = { ...board };
-  newBoard[col]!.rowCompleted = !newBoard[col]!.rowCompleted;
+  newBoard[col]!.maxAvailable = !newBoard[col]!.maxAvailable;
   setBoard(newBoard);
 };
 
-export const handleColCompleteClick = (
-  board: boardObject,
-  col: string,
-  marked: "none" | "min" | "max",
+export const resetGame = (
   setBoard: (e: boardObject) => void,
+  setWilds: (e: wildsObject) => void,
 ) => {
-  const newBoard = { ...board };
-  newBoard[col]!.marked =
-    newBoard[col]!.marked === marked
-      ? (newBoard[col]!.marked = "none")
-      : (newBoard[col]!.marked = marked);
-  setBoard(newBoard);
-};
-
-export const resetGame = (setBoard: (e: boardObject) => void, setWilds: (e: wildsObject) => void) => {
   setBoard(boardZod.parse(defaultGame));
   setWilds(defaultWilds);
 };
