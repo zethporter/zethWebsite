@@ -8,34 +8,14 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/solid";
 import { Gluten } from "next/font/google";
-import { useAtom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
-import { useReward } from "react-rewards";
 
-import {
-  type boardObject,
-  defaultGame,
-  boardZod,
-  type wildsObject,
-  defaultWilds,
-  wildsZod,
-} from "../../components/zoncore/defaultGame";
-import { handleCellClick, resetGame } from "../../components/zoncore/utils";
 import {
   WildSelector,
   ColorsScore,
   Score,
   MinMaxButtons,
+  useZoncore,
 } from "../../components/zoncore";
-
-const currentGameAtom = atomWithStorage<boardObject>(
-  "currentZoncoreGame",
-  boardZod.parse(defaultGame),
-);
-const currentWilds = atomWithStorage<wildsObject>(
-  "currentZoncoreWilds",
-  wildsZod.parse(defaultWilds),
-);
 
 const gluten = Gluten({
   subsets: ["latin"],
@@ -50,8 +30,16 @@ const colors = {
 };
 
 const Board = () => {
-  const [board, setBoard] = useAtom(currentGameAtom);
-  const [wilds, setWilds] = useAtom(currentWilds);
+  const {
+    resetGame,
+    handleCellClick,
+    board,
+    wilds,
+    setWilds,
+    toggleMaxAvailable,
+    toggleMaxColor,
+    totals,
+  } = useZoncore("columnConfetti");
   return (
     <TransformWrapper
       disablePadding={true}
@@ -91,7 +79,7 @@ const Board = () => {
                       type="button"
                       disabled={!cell.clickable}
                       key={key + cellKey}
-                      onClick={() => handleCellClick(board, [key, j], setBoard)}
+                      onClick={() => handleCellClick([key, j])}
                       className={clsx(
                         "btn btn-square swap swap-rotate",
                         colors[cell.color] ?? "bg-primary",
@@ -113,7 +101,7 @@ const Board = () => {
                       type="button"
                       disabled={!cell.clickable}
                       key={key + cellKey}
-                      onClick={() => handleCellClick(board, [key, j], setBoard)}
+                      onClick={() => handleCellClick([key, j])}
                       className={clsx(
                         "btn btn-square swap swap-rotate",
                         colors[cell.color] ?? "bg-primary",
@@ -133,19 +121,18 @@ const Board = () => {
                   );
                 })}
                 <MinMaxButtons
-                  board={board}
-                  col={key}
                   minPoints={board[key]!.minPoints}
                   maxPoints={board[key]!.maxPoints}
                   maxAvailable={board[key]!.maxAvailable}
-                  colCompleted={board[key]!.colCompleted}
-                  setBoard={setBoard}
+                  completed={board[key]!.colCompleted}
+                  maxFunc={() => toggleMaxAvailable(key)}
+                  className={"bg-base-content"}
                 />
               </div>
             ))}
           </div>
           <div className="flex flex-col gap-1">
-            <ColorsScore />
+            <ColorsScore totals={totals} toggleMaxColor={toggleMaxColor} />
             <Score />
           </div>
           <div className="flex h-5 w-full justify-center ">
@@ -154,7 +141,7 @@ const Board = () => {
           <WildSelector wilds={wilds} setWilds={setWilds} />
           <button
             type="button"
-            onClick={() => resetGame(setBoard, setWilds)}
+            onClick={() => resetGame()}
             className="btn btn-accent "
           >
             Reset

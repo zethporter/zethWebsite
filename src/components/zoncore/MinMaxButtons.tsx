@@ -1,56 +1,96 @@
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
-import { toggleMaxAvailable } from "./utils";
-import { type boardObject } from "./defaultGame";
 
 const SelectedWrapper = ({
-  // points,
-  // maxAvailable,
-  // colComplete,
+  isMax,
+  backgroundColor,
+  maxAvailable,
+  completed,
   children,
+  onClick,
 }: {
-  // points: number;
-  // maxAvailable: boolean;
-  // colComplete: boolean;
+  isMax?: boolean | undefined;
+  backgroundColor: string;
+  maxAvailable: boolean;
+  completed: boolean;
   children: React.JSX.Element | number | string;
+  onClick?: () => void;
 }) => {
   return (
-    <div className="relative z-10 flex w-full cursor-pointer items-center overflow-hidden rounded-xl border border-transparent p-[2px]">
-      <div className="animate-rotate absolute inset-0 h-full w-full rounded-full bg-[conic-gradient(#0ea5e9_20deg,transparent_120deg)]"></div>
-      <div className="base-300 relative z-20 flex w-full rounded-[0.60rem] p-0">
+    <button
+      type="button"
+      onClick={onClick}
+      className={twMerge(
+        clsx(
+          "btn btn-square relative z-10 flex w-full items-center overflow-hidden rounded-btn border border-transparent p-[4px]",
+          completed && "bg-transparent from-primary hover:from-secondary",
+          isMax ? "cursor-pointer" : "pointer-events-none",
+        ),
+      )}
+    >
+      <div
+        className={twMerge(
+          clsx(
+            "absolute inset-0 h-full w-full animate-rotate rounded-full",
+            completed && isMax && maxAvailable
+              ? "bg-[conic-gradient(var(--tw-gradient-stops))] from-inherit"
+              : completed && !isMax && !maxAvailable
+                ? "bg-[conic-gradient(var(--tw-gradient-stops))] from-inherit"
+                : backgroundColor,
+            isMax && !maxAvailable ? "bg-base-200" : null,
+          ),
+        )}
+      ></div>
+      <div
+        className={twMerge(
+          clsx(
+            "base-300 relative z-20 flex h-full w-full items-center justify-center rounded-[0.3rem] bg-base-content p-0 pt-1 text-4xl text-base-300",
+            backgroundColor,
+            isMax && !maxAvailable ? "bg-base-200" : null,
+          ),
+        )}
+      >
         {children}
       </div>
-    </div>
+    </button>
   );
 };
 
 const MinMaxButtons = ({
-  board,
-  col,
   minPoints,
   maxPoints,
   maxAvailable,
-  colCompleted,
-  setBoard,
+  completed,
+  maxFunc,
+  className,
 }: {
-  board: boardObject;
-  col: string;
   minPoints: number;
   maxPoints: number;
   maxAvailable: boolean;
-  colCompleted: boolean;
-  setBoard: (e: boardObject) => void;
+  completed: boolean;
+  maxFunc: () => void;
+  className: string;
 }) => {
   // const { reward } = useReward("columnConfetti", "confetti");
 
   return (
     <>
-      <SelectedWrapper>
-        <div className="flex h-full w-full items-center justify-center rounded-btn bg-base-300">
-          {minPoints}
-        </div>
+      <SelectedWrapper
+        isMax
+        completed={completed}
+        maxAvailable={maxAvailable}
+        backgroundColor={className}
+        onClick={maxFunc}
+      >
+        {maxPoints}
       </SelectedWrapper>
-      <SelectedWrapper>{maxPoints}</SelectedWrapper>
+      <SelectedWrapper
+        completed={completed}
+        maxAvailable={maxAvailable}
+        backgroundColor={className}
+      >
+        {minPoints}
+      </SelectedWrapper>
     </>
   );
   // return;
