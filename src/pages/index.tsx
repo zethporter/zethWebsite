@@ -29,10 +29,10 @@ const Home: NextPage = () => {
               </Link>
               <Link
                 className="btn flex h-full max-w-xs flex-col justify-start gap-4 rounded-xl bg-white/10 p-4 text-left text-white hover:bg-white/20"
-                href="/pinochle"
+                href="/zoncore"
               >
-                <h3 className="text-2xl font-bold text-violet-400">Pinochle</h3>
-                <div className="text-lg">Pinochle Scoreboard</div>
+                <h3 className="text-2xl font-bold text-violet-400">Zoncore</h3>
+                <div className="text-lg">Zeth&apos;s version of Encore</div>
               </Link>
             </div>
           </div>

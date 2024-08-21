@@ -1,5 +1,15 @@
 import { z } from "zod";
-import { defaultGame, type boardObject, boardZod, type wildsObject, defaultWilds } from "./defaultGame";
+import {
+  defaultGame,
+  type boardObject,
+  boardZod,
+  type wildsObject,
+  defaultWilds,
+  type totalsObject,
+  totals,
+  defaultTotals,
+  availableColors,
+} from "./defaultGame";
 
 const z_surroundingCells = z.array(z.tuple([z.string(), z.number()]));
 type t_surroundingCells = z.infer<typeof z_surroundingCells>;
@@ -34,12 +44,24 @@ const getSurroundingCells = (_rowId: number, _colId: string) => {
   return filteredCells;
 };
 
-const clickableCheck = (board: boardObject) => {
+const clickableCheck = (board: boardObject, currTotals: totalsObject) => {
   const newBoard = { ...board };
+  const newTotals = totals.parse(defaultTotals);
+  newTotals.available = currTotals.available;
   Object.keys(newBoard).forEach((col) => {
-    Object.keys(newBoard[col]!.cells).forEach((row) => {
+    const _col = newBoard[col]!;
+    let selectedCount = 0;
+    Object.keys(_col.cells).forEach((row) => {
+      const _row = _col.cells[parseInt(row)]!;
+      if (_row.selected) {
+        selectedCount++;
+        newTotals[_row.color] = newTotals[_row.color] + 1;
+        if (_row.star) {
+          newTotals.star = newTotals.star - 1;
+        }
+      }
       if (col === "h") {
-        newBoard[col]!.cells[parseInt(row)]!.clickable = true;
+        _row.clickable = true;
       } else {
         let clickable = false;
         const surroundingCells = getSurroundingCells(
@@ -56,50 +78,97 @@ const clickableCheck = (board: boardObject) => {
             break;
           }
         }
-        newBoard[col]!.cells[parseInt(row)]!.clickable = clickable;
+        _row.clickable = clickable;
+      }
+      if (selectedCount === 7) {
+        _col.colCompleted = true;
+        const colPoints = _col.maxAvailable ? _col.maxPoints : _col.minPoints;
+        newTotals.aThruO = newTotals.aThruO + colPoints;
+      } else {
+        _col.colCompleted = false;
       }
     });
   });
-  return newBoard;
+  return { newBoard, newTotals };
 };
 
 export const handleCellClick = (
   board: boardObject,
   key: [string, number],
   setBoard: (e: boardObject) => void,
+  totals: totalsObject,
+  setTotals: (e: totalsObject) => void,
 ) => {
   console.log(key);
   const [col, row] = key;
   const newBoard = { ...board };
   newBoard[col]!.cells[row]!.selected = !newBoard[col]!.cells[row]!.selected;
-  setBoard(clickableCheck(newBoard));
+  const newStuff: { newBoard: boardObject; newTotals: totalsObject } =
+    clickableCheck(newBoard, totals);
+  setBoard(newStuff.newBoard);
+  setTotals(newStuff.newTotals);
 };
 
-export const handleColHeaderClick = (
+export const toggleMaxColorAvailable = (
+  totals: totalsObject,
+  color: availableColors,
+  setTotals: (e: totalsObject) => void,
+) => {
+  const _totals = { ...totals };
+  _totals.available[color] = !_totals.available[color];
+  setTotals(_totals);
+};
+
+export const toggleMaxAvailable = (
   board: boardObject,
   col: string,
   setBoard: (e: boardObject) => void,
+  totals: totalsObject,
+  setTotals: (e: totalsObject) => void,
 ) => {
   const newBoard = { ...board };
-  newBoard[col]!.rowCompleted = !newBoard[col]!.rowCompleted;
-  setBoard(newBoard);
+  newBoard[col]!.maxAvailable = !newBoard[col]!.maxAvailable;
+  const newStuff: { newBoard: boardObject; newTotals: totalsObject } =
+    clickableCheck(newBoard, totals);
+  setBoard(newStuff.newBoard);
+  setTotals(newStuff.newTotals);
 };
 
-export const handleColCompleteClick = (
-  board: boardObject,
-  col: string,
-  marked: "none" | "min" | "max",
+export const resetGame = (
   setBoard: (e: boardObject) => void,
+  setWilds: (e: wildsObject) => void,
+  setTotals: (e: totalsObject) => void,
 ) => {
-  const newBoard = { ...board };
-  newBoard[col]!.marked =
-    newBoard[col]!.marked === marked
-      ? (newBoard[col]!.marked = "none")
-      : (newBoard[col]!.marked = marked);
-  setBoard(newBoard);
-};
-
-export const resetGame = (setBoard: (e: boardObject) => void, setWilds: (e: wildsObject) => void) => {
   setBoard(boardZod.parse(defaultGame));
   setWilds(defaultWilds);
+  setTotals(defaultTotals);
+};
+
+export const bonusCalc = (totals: totalsObject) => {
+  const totalArray: number[] = (
+    Object.keys(availableColors) as Array<keyof typeof availableColors>
+  ).map((key) => {
+    if (totals[key] === 21) {
+      return totals.available[key] ? 5 : 3;
+    }
+    return 0;
+  });
+
+  return totalArray.reduce((partialSum, a) => partialSum + a, 0);
+};
+
+export const toggleWilds = (
+  wilds: wildsObject,
+  setWilds: (e: wildsObject) => void,
+  isUsed: boolean,
+) => {
+  const _wilds = { ...wilds };
+  if (isUsed) {
+    _wilds.selected = _wilds.selected - 1;
+    _wilds.available = _wilds.available + 1;
+  } else {
+    _wilds.selected = _wilds.selected + 1;
+    _wilds.available = _wilds.available - 1;
+  }
+  setWilds(_wilds);
 };

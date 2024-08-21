@@ -1,5 +1,33 @@
 import { z } from "zod";
 
+export enum availableColors {
+  green = "green",
+  yellow = "yellow",
+  blue = "blue",
+  red = "red",
+  orange = "orange",
+}
+
+export const z_availableColors = z.nativeEnum(availableColors);
+
+export const scoreZod = z.object({
+  bonus: z.number().default(0),
+  aThruO: z.number().default(0),
+  wilds: z.number().default(0),
+  stars: z.number().default(0),
+  total: z.number().default(0),
+});
+
+export type scoreObject = z.infer<typeof scoreZod>;
+
+export const defaultScore = {
+  bonus: 0,
+  aThruO: 0,
+  wilds: 0,
+  stars: 0,
+  total: 0,
+};
+
 export const wildsZod = z
   .object({
     available: z.number(),
@@ -25,6 +53,42 @@ export type wildsObject = z.infer<typeof wildsZod>;
 
 export const defaultWilds = { available: 8, selected: 0 };
 
+export const totals = z.object({
+  aThruO: z.number().default(0),
+  star: z.number().min(0).default(15),
+  green: z.number().max(21).default(0),
+  yellow: z.number().max(21).default(0),
+  blue: z.number().max(21).default(0),
+  red: z.number().max(21).default(0),
+  orange: z.number().max(21).default(0),
+  available: z.object({
+    green: z.boolean().default(true),
+    yellow: z.boolean().default(true),
+    blue: z.boolean().default(true),
+    red: z.boolean().default(true),
+    orange: z.boolean().default(true),
+  }),
+});
+
+export type totalsObject = z.infer<typeof totals>;
+
+export const defaultTotals = {
+  aThruO: 0,
+  star: 15,
+  green: 0,
+  yellow: 0,
+  blue: 0,
+  red: 0,
+  orange: 0,
+  available: {
+    green: true,
+    yellow: true,
+    blue: true,
+    red: true,
+    orange: true,
+  },
+};
+
 export const cellZod = z.record(
   z.string(),
   z.object({
@@ -38,8 +102,8 @@ export const cellZod = z.record(
 export const boardColumnZod = z.object({
   minPoints: z.number(),
   maxPoints: z.number(),
-  marked: z.enum(["none", "min", "max"]).default("none"),
-  rowCompleted: z.boolean().default(false),
+  maxAvailable: z.boolean().default(false),
+  colCompleted: z.boolean().default(false),
   cells: cellZod,
 });
 
@@ -51,8 +115,8 @@ export const defaultGame = {
   a: {
     minPoints: 3,
     maxPoints: 5,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     wilds: {
       available: 8,
       selected: 0,
@@ -105,8 +169,8 @@ export const defaultGame = {
   b: {
     minPoints: 2,
     maxPoints: 3,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "green",
@@ -155,8 +219,8 @@ export const defaultGame = {
   c: {
     minPoints: 2,
     maxPoints: 3,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "green",
@@ -205,8 +269,8 @@ export const defaultGame = {
   d: {
     minPoints: 2,
     maxPoints: 3,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "yellow",
@@ -255,8 +319,8 @@ export const defaultGame = {
   e: {
     minPoints: 1,
     maxPoints: 2,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "yellow",
@@ -305,8 +369,8 @@ export const defaultGame = {
   f: {
     minPoints: 1,
     maxPoints: 2,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "yellow",
@@ -355,8 +419,8 @@ export const defaultGame = {
   g: {
     minPoints: 1,
     maxPoints: 2,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "yellow",
@@ -405,8 +469,8 @@ export const defaultGame = {
   h: {
     minPoints: 0,
     maxPoints: 1,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "green",
@@ -455,8 +519,8 @@ export const defaultGame = {
   i: {
     minPoints: 1,
     maxPoints: 2,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "blue",
@@ -505,8 +569,8 @@ export const defaultGame = {
   j: {
     minPoints: 1,
     maxPoints: 2,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "blue",
@@ -555,8 +619,8 @@ export const defaultGame = {
   k: {
     minPoints: 1,
     maxPoints: 2,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "blue",
@@ -605,8 +669,8 @@ export const defaultGame = {
   l: {
     minPoints: 2,
     maxPoints: 3,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "orange",
@@ -655,8 +719,8 @@ export const defaultGame = {
   m: {
     minPoints: 2,
     maxPoints: 3,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "yellow",
@@ -705,8 +769,8 @@ export const defaultGame = {
   n: {
     minPoints: 2,
     maxPoints: 3,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "yellow",
@@ -755,8 +819,8 @@ export const defaultGame = {
   o: {
     minPoints: 3,
     maxPoints: 5,
-    marked: "none",
-    rowCompleted: false,
+    maxAvailable: true,
+    colCompleted: false,
     cells: {
       0: {
         color: "yellow",
