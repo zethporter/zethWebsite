@@ -8,7 +8,7 @@ import {
   type totalsObject,
   totals,
   defaultTotals,
-  type availableColors,
+  availableColors,
 } from "./defaultGame";
 
 const z_surroundingCells = z.array(z.tuple([z.string(), z.number()]));
@@ -56,9 +56,9 @@ const clickableCheck = (board: boardObject, currTotals: totalsObject) => {
       if (_row.selected) {
         selectedCount++;
         newTotals[_row.color] = newTotals[_row.color] + 1;
-      }
-      if (_row.star) {
-        newTotals.star = newTotals.star + 1;
+        if (_row.star) {
+          newTotals.star = newTotals.star - 1;
+        }
       }
       if (col === "h") {
         _row.clickable = true;
@@ -82,6 +82,8 @@ const clickableCheck = (board: boardObject, currTotals: totalsObject) => {
       }
       if (selectedCount === 7) {
         _col.colCompleted = true;
+        const colPoints = _col.maxAvailable ? _col.maxPoints : _col.minPoints;
+        newTotals.aThruO = newTotals.aThruO + colPoints;
       } else {
         _col.colCompleted = false;
       }
@@ -121,16 +123,52 @@ export const toggleMaxAvailable = (
   board: boardObject,
   col: string,
   setBoard: (e: boardObject) => void,
+  totals: totalsObject,
+  setTotals: (e: totalsObject) => void,
 ) => {
   const newBoard = { ...board };
   newBoard[col]!.maxAvailable = !newBoard[col]!.maxAvailable;
-  setBoard(newBoard);
+  const newStuff: { newBoard: boardObject; newTotals: totalsObject } =
+    clickableCheck(newBoard, totals);
+  setBoard(newStuff.newBoard);
+  setTotals(newStuff.newTotals);
 };
 
 export const resetGame = (
   setBoard: (e: boardObject) => void,
   setWilds: (e: wildsObject) => void,
+  setTotals: (e: totalsObject) => void,
 ) => {
   setBoard(boardZod.parse(defaultGame));
   setWilds(defaultWilds);
+  setTotals(defaultTotals);
+};
+
+export const bonusCalc = (totals: totalsObject) => {
+  const totalArray: number[] = (
+    Object.keys(availableColors) as Array<keyof typeof availableColors>
+  ).map((key) => {
+    if (totals[key] === 21) {
+      return totals.available[key] ? 5 : 3;
+    }
+    return 0;
+  });
+
+  return totalArray.reduce((partialSum, a) => partialSum + a, 0);
+};
+
+export const toggleWilds = (
+  wilds: wildsObject,
+  setWilds: (e: wildsObject) => void,
+  isUsed: boolean,
+) => {
+  const _wilds = { ...wilds };
+  if (isUsed) {
+    _wilds.selected = _wilds.selected - 1;
+    _wilds.available = _wilds.available + 1;
+  } else {
+    _wilds.selected = _wilds.selected + 1;
+    _wilds.available = _wilds.available - 1;
+  }
+  setWilds(_wilds);
 };

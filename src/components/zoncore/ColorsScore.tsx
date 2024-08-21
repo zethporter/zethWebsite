@@ -39,7 +39,7 @@ const ColorsScore = ({
   return (
     <div className="flex flex-col gap-1">
       {colors.map(([color, className], key) => (
-        <div key={key} className="flex flex-row gap-1">
+        <div key={key} className="grid grid-cols-2 gap-1">
           <MinMaxButtons
             minPoints={3}
             maxPoints={5}

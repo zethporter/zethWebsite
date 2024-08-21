@@ -16,6 +16,7 @@ import {
   MinMaxButtons,
   useZoncore,
 } from "../../components/zoncore";
+import Menu from "../../components/zoncore/Menu";
 
 const gluten = Gluten({
   subsets: ["latin"],
@@ -31,15 +32,15 @@ const colors = {
 
 const Board = () => {
   const {
-    resetGame,
     handleCellClick,
     board,
     wilds,
-    setWilds,
+    toggleWilds,
     toggleMaxAvailable,
     toggleMaxColor,
     totals,
-  } = useZoncore("columnConfetti");
+    score,
+  } = useZoncore();
   return (
     <TransformWrapper
       disablePadding={true}
@@ -48,6 +49,7 @@ const Board = () => {
       maxScale={7}
       doubleClick={{ disabled: true }}
     >
+      <Menu />
       <TransformComponent
         wrapperClass="bg-base-300 p-10 "
         wrapperStyle={{ height: "100vh", width: "100%" }}
@@ -131,21 +133,14 @@ const Board = () => {
               </div>
             ))}
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex w-52 flex-col gap-1">
             <ColorsScore totals={totals} toggleMaxColor={toggleMaxColor} />
-            <Score />
+            <Score score={score} />
           </div>
+          <WildSelector wilds={wilds} toggleWilds={toggleWilds} />
           <div className="flex h-5 w-full justify-center ">
             <span id="columnConfetti" />
           </div>
-          <WildSelector wilds={wilds} setWilds={setWilds} />
-          <button
-            type="button"
-            onClick={() => resetGame()}
-            className="btn btn-accent "
-          >
-            Reset
-          </button>
         </div>
       </TransformComponent>
     </TransformWrapper>
@@ -154,7 +149,7 @@ const Board = () => {
 
 const Zoncore = () => {
   return (
-    <main data-theme={"dark"}>
+    <main id="zoncoreMain" data-theme={"dark"}>
       <Board />
     </main>
   );

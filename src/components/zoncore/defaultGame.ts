@@ -10,6 +10,24 @@ export enum availableColors {
 
 export const z_availableColors = z.nativeEnum(availableColors);
 
+export const scoreZod = z.object({
+  bonus: z.number().default(0),
+  aThruO: z.number().default(0),
+  wilds: z.number().default(0),
+  stars: z.number().default(0),
+  total: z.number().default(0),
+});
+
+export type scoreObject = z.infer<typeof scoreZod>;
+
+export const defaultScore = {
+  bonus: 0,
+  aThruO: 0,
+  wilds: 0,
+  stars: 0,
+  total: 0,
+};
+
 export const wildsZod = z
   .object({
     available: z.number(),
@@ -36,6 +54,7 @@ export type wildsObject = z.infer<typeof wildsZod>;
 export const defaultWilds = { available: 8, selected: 0 };
 
 export const totals = z.object({
+  aThruO: z.number().default(0),
   star: z.number().min(0).default(15),
   green: z.number().max(21).default(0),
   yellow: z.number().max(21).default(0),
@@ -54,6 +73,7 @@ export const totals = z.object({
 export type totalsObject = z.infer<typeof totals>;
 
 export const defaultTotals = {
+  aThruO: 0,
   star: 15,
   green: 0,
   yellow: 0,
