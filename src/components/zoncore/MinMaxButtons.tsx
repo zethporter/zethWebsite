@@ -22,36 +22,18 @@ const SelectedWrapper = ({
       onClick={onClick}
       className={twMerge(
         clsx(
-          "btn btn-square relative z-10 flex w-full items-center overflow-hidden rounded-btn border border-transparent p-[4px]",
-          completed && "bg-transparent from-primary hover:from-secondary",
           isMax ? "cursor-pointer" : "pointer-events-none",
+          "btn btn-square w-full pt-1 text-4xl font-semibold text-base-300",
+          completed && isMax && maxAvailable
+            ? "bg-gradient-to-br from-primary to-secondary hover:from-accent hover:to-secondary"
+            : completed && !isMax && !maxAvailable
+              ? "bg-gradient-to-br from-primary to-secondary hover:from-accent hover:to-secondary"
+              : backgroundColor,
+          isMax && !maxAvailable ? "bg-base-100" : null,
         ),
       )}
     >
-      <div
-        className={twMerge(
-          clsx(
-            "absolute inset-0 h-full w-full animate-rotate rounded-full",
-            completed && isMax && maxAvailable
-              ? "bg-[conic-gradient(var(--tw-gradient-stops))] from-inherit"
-              : completed && !isMax && !maxAvailable
-                ? "bg-[conic-gradient(var(--tw-gradient-stops))] from-inherit"
-                : backgroundColor,
-            isMax && !maxAvailable ? "bg-base-200" : null,
-          ),
-        )}
-      ></div>
-      <div
-        className={twMerge(
-          clsx(
-            "base-300 relative z-20 flex h-full w-full items-center justify-center rounded-[0.3rem] bg-base-content p-0 pt-1 text-4xl text-base-300",
-            backgroundColor,
-            isMax && !maxAvailable ? "bg-base-200" : null,
-          ),
-        )}
-      >
-        {children}
-      </div>
+      {children}
     </button>
   );
 };

@@ -1,4 +1,6 @@
 import clsx from "clsx";
+import { useAtomValue } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { twMerge } from "tailwind-merge";
 import {
@@ -21,6 +23,8 @@ import Menu from "../../components/zoncore/Menu";
 const gluten = Gluten({
   subsets: ["latin"],
 });
+
+export const themeAtom = atomWithStorage<string>("currentTheme", "dark");
 
 const colors = {
   red: "bg-red-500 hover:bg-red-700 disabled:bg-red-500/60",
@@ -45,8 +49,8 @@ const Board = () => {
     <TransformWrapper
       disablePadding={true}
       centerOnInit={true}
-      minScale={0.4}
-      maxScale={7}
+      minScale={0.6}
+      maxScale={3}
       doubleClick={{ disabled: true }}
     >
       <Menu />
@@ -148,8 +152,9 @@ const Board = () => {
 };
 
 const Zoncore = () => {
+  const theme = useAtomValue(themeAtom);
   return (
-    <main id="zoncoreMain" data-theme={"dark"}>
+    <main id="zoncoreMain" data-theme={theme}>
       <Board />
     </main>
   );
