@@ -8,13 +8,15 @@ const SelectedWrapper = ({
   completed,
   children,
   onClick,
+  boardKey,
 }: {
   isMax?: boolean | undefined;
-  backgroundColor: string | string[];
+  backgroundColor: string;
   maxAvailable: boolean;
   completed: boolean;
   children: React.JSX.Element | number | string;
   onClick?: () => void;
+  boardKey?: string;
 }) => {
   return (
     <button
@@ -23,13 +25,14 @@ const SelectedWrapper = ({
       className={twMerge(
         clsx(
           isMax ? "cursor-pointer" : "pointer-events-none",
-          "btn btn-square w-full pt-1 text-4xl font-semibold text-base-300",
+          "btn btn-square w-full pt-1 text-4xl font-semibold",
           completed && isMax && maxAvailable
             ? "bg-gradient-to-br from-primary to-secondary hover:from-accent hover:to-secondary"
             : completed && !isMax && !maxAvailable
               ? "bg-gradient-to-br from-primary to-secondary hover:from-accent hover:to-secondary"
               : backgroundColor,
           isMax && !maxAvailable ? "bg-base-100" : null,
+          boardKey === "h" ? "text-red-700" : "text-base-300",
         ),
       )}
     >
@@ -45,13 +48,15 @@ const MinMaxButtons = ({
   completed,
   maxFunc,
   className,
+  boardKey,
 }: {
   minPoints: number;
   maxPoints: number;
   maxAvailable: boolean;
   completed: boolean;
   maxFunc: () => void;
-  className: string | string[];
+  className: string;
+  boardKey?: string;
 }) => {
   // const { reward } = useReward("columnConfetti", "confetti");
 
@@ -62,6 +67,7 @@ const MinMaxButtons = ({
         completed={completed}
         maxAvailable={maxAvailable}
         backgroundColor={className}
+        boardKey={boardKey}
         onClick={maxFunc}
       >
         {maxPoints}
@@ -70,6 +76,7 @@ const MinMaxButtons = ({
         completed={completed}
         maxAvailable={maxAvailable}
         backgroundColor={className}
+        boardKey={boardKey}
       >
         {minPoints}
       </SelectedWrapper>

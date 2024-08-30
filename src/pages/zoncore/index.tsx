@@ -133,10 +133,8 @@ const Board = () => {
                     maxAvailable={board[key]!.maxAvailable}
                     completed={board[key]!.colCompleted}
                     maxFunc={() => toggleMaxAvailable(key)}
-                    className={[
-                      "bg-base-content",
-                      key === "h" && "text-red-700",
-                    ]}
+                    boardKey={key}
+                    className={"bg-base-content"}
                   />
                 </div>
               ))}
