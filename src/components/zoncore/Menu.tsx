@@ -29,7 +29,7 @@ const Menu = () => {
           className="btn btn-square btn-accent fixed left-10 top-10 z-50 outline-none"
           aria-label="Customise options"
         >
-          <Bars3Icon />
+          <Bars3Icon className="h-8 w-8" />
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content
@@ -44,7 +44,7 @@ const Menu = () => {
             </div>
           </DropdownMenu.SubTrigger>
           <DropdownMenu.SubContent
-            className="menu z-[52] grid grid-cols-5 gap-2 rounded-box border border-base-200 bg-base-100 p-2"
+            className="menu z-[52] grid max-w-[60svw] grid-flow-col grid-rows-2 gap-2 overflow-x-auto rounded-box border border-base-200 bg-base-100 p-2"
             sideOffset={8}
             alignOffset={-5}
           >
@@ -56,13 +56,13 @@ const Menu = () => {
               >
                 <div
                   data-theme={theme}
-                  className="grid grid-cols-3 gap-1 rounded-box bg-base-300 p-2"
+                  className="grid grid-flow-col grid-rows-2 flex-wrap gap-1 rounded-box bg-base-300 p-2"
                 >
-                  <div className="h-8 w-8 rounded-btn bg-primary"></div>
-                  <div className="h-8 w-8 rounded-btn bg-secondary"></div>
-                  <div className="h-8 w-8 rounded-btn bg-accent"></div>
-                  <div className="col-start-2 h-8 w-8 rounded-btn bg-base-100"></div>
-                  <div className="h-8 w-8 rounded-btn bg-base-200"></div>
+                  <div className="aspect-square w-8 rounded-btn bg-primary"></div>
+                  <div className="aspect-square w-8 rounded-btn bg-secondary"></div>
+                  <div className="aspect-square w-8 rounded-btn bg-accent"></div>
+                  <div className="col-start-2 aspect-square w-8 rounded-btn bg-base-100"></div>
+                  <div className="aspect-square w-8 rounded-btn bg-base-200"></div>
                 </div>
               </DropdownMenu.Item>
             ))}

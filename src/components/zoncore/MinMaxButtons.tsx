@@ -10,7 +10,7 @@ const SelectedWrapper = ({
   onClick,
 }: {
   isMax?: boolean | undefined;
-  backgroundColor: string;
+  backgroundColor: string | string[];
   maxAvailable: boolean;
   completed: boolean;
   children: React.JSX.Element | number | string;
@@ -51,7 +51,7 @@ const MinMaxButtons = ({
   maxAvailable: boolean;
   completed: boolean;
   maxFunc: () => void;
-  className: string;
+  className: string | string[];
 }) => {
   // const { reward } = useReward("columnConfetti", "confetti");
 
@@ -75,28 +75,6 @@ const MinMaxButtons = ({
       </SelectedWrapper>
     </>
   );
-  // return;
-  // !disabled ? (
-  //   <button
-  //     // disabled={disabled}
-  //     type="button"
-  //     onClick={onClick}
-  //     onClickCapture={reward}
-  //     className={twMerge(
-  //       clsx(
-  //         "btn btn-square pt-1 align-middle text-4xl",
-  //         className,
-  //         disabled
-  //           ? "bg-base-100 text-base-content/30 hover:text-base-content/90"
-  //           : "bg-base-content text-base-300 hover:bg-base-content/70",
-  //       ),
-  //     )}
-  //   >
-  //     {points}
-  //   </button>
-  // ) : (
-
-  // );
 };
 
 export default MinMaxButtons;
