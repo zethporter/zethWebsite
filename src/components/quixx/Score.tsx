@@ -83,29 +83,29 @@ const Score = ({
   }, [gameData]);
 
   return (
-    <div className="flex flex-1 flex-row justify-between">
-      <p className="self-center rounded-2xl border-4 border-red-600 bg-base-100 p-3 text-3xl">
-        {scores.red}
+    <div className="flex h-full flex-1 flex-row justify-between">
+      <p className="flex h-full min-w-14 flex-row items-center justify-center rounded-2xl border-4 border-red-600 bg-base-100 p-3 text-2xl font-semibold">
+        <span>{scores.red}</span>
       </p>
-      <PlusIcon className="w-9 fill-slate-600 stroke-slate-600" />
-      <p className="self-center rounded-2xl border-4 border-yellow-600 bg-base-100 p-3 text-3xl">
-        {scores.yellow}
+      <PlusIcon className="w-8 fill-slate-600 stroke-slate-600" />
+      <p className="flex h-full min-w-16 flex-row items-center justify-center rounded-2xl border-4 border-yellow-600 bg-base-100 p-2 text-2xl font-semibold">
+        <span>{scores.yellow}</span>
       </p>
-      <PlusIcon className="w-9 fill-slate-600 stroke-slate-600" />
-      <p className="self-center rounded-2xl border-4 border-green-600 bg-base-100 p-3 text-3xl">
-        {scores.green}
+      <PlusIcon className="w-8 fill-slate-600 stroke-slate-600" />
+      <p className="flex h-full min-w-16 flex-row items-center justify-center rounded-2xl border-4 border-green-600 bg-base-100 p-2 text-2xl font-semibold">
+        <span>{scores.green}</span>
       </p>
-      <PlusIcon className="w-9 fill-slate-600 stroke-slate-600" />
-      <p className="self-center rounded-2xl border-4 border-blue-600 bg-base-100 p-3 text-3xl">
-        {scores.blue}
+      <PlusIcon className="w-8 fill-slate-600 stroke-slate-600" />
+      <p className="flex h-full min-w-16 flex-row items-center justify-center rounded-2xl border-4 border-blue-600 bg-base-100 p-2 text-2xl font-semibold">
+        <span>{scores.blue}</span>
       </p>
-      <MinusIcon className="w-9 fill-slate-600 stroke-slate-600" />
-      <p className="self-center rounded-2xl border-4 border-secondary bg-base-100 p-3 text-3xl">
-        {scores.negatives}
+      <MinusIcon className="w-8 fill-slate-600 stroke-slate-600" />
+      <p className="flex h-full min-w-16 flex-row items-center justify-center rounded-2xl border-4 border-secondary bg-base-100 p-2 text-2xl font-semibold">
+        <span>{scores.negatives}</span>
       </p>
-      <Bars2Icon className="w-9 fill-slate-600 stroke-slate-600" />
-      <p className="self-center rounded-2xl border-4 border-primary bg-base-100 px-6 py-3 text-3xl">
-        {scores.total}
+      <Bars2Icon className="w-8 fill-slate-600 stroke-slate-600" />
+      <p className="flex h-full min-w-24 flex-row items-center justify-center rounded-2xl border-4 border-primary bg-base-100 p-2 text-2xl font-bold">
+        <span>{scores.total}</span>
       </p>
     </div>
   );

@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import { useSetAtom, useAtom } from "jotai";
-import { setCookie } from "cookies-next";
 import { games } from "./games";
 import {
   RocketLaunchIcon,
@@ -73,8 +72,6 @@ export const colors = {
   error: { text: "text-error", stroke: "stroke-error", radio: "radio-error" },
 };
 
-// setCookie('theme', newTheme, { expires: new Date(Date.now() + (360 * 24 * 3600000)) })
-
 export const icons = {
   RocketLaunchIcon: <RocketLaunchIcon />,
   CheckIcon: <CheckIcon />,
@@ -113,11 +110,11 @@ const Modal = ({
       <form
         onSubmit={handleSubmit((data) => setMarkerSettings(data))}
         className={clsx(
-          "modal-box flex max-w-6xl flex-col gap-2 overflow-auto bg-base-100",
+          "modal-box flex max-w-6xl flex-col gap-6 overflow-auto bg-base-100",
         )}
       >
         <h3 className="self-center text-xl">Icon</h3>
-        <div className="flex flex-row flex-wrap justify-center gap-2">
+        <div className="flex flex-row flex-wrap justify-center gap-2 px-10">
           {Object.keys(icons).map((icon) => (
             <div
               key={icon}
@@ -173,27 +170,12 @@ const Modal = ({
             />
           ))}
         </div>
-        <div
-          onClick={() => {
-            setCookie("markerSettings", JSON.stringify(currentValues), {
-              expires: new Date(Date.now() + 360 * 24 * 3600000),
-            });
-            setMarkerSettings(currentValues);
-            handleClose();
-          }}
-          className="btn-small btn btn-primary w-fit self-end"
-        >
-          Save
-        </div>
         <div className="divider col-span-full">Board</div>
         <select
           onChange={(e) => {
             setGame(games[e.target.value as keyof typeof games]);
-            setCookie("game", e.target.value, {
-              expires: new Date(Date.now() + 360 * 24 * 3600000),
-            });
           }}
-          className="select select-primary col-span-full w-full"
+          className="select select-accent col-span-full w-full"
         >
           {Object.keys(games).map((game, i) => (
             <option key={i} value={game}>
@@ -201,6 +183,16 @@ const Modal = ({
             </option>
           ))}
         </select>
+        <button
+          type="button"
+          onClick={() => {
+            setMarkerSettings(currentValues);
+            handleClose();
+          }}
+          className="btn btn-secondary btn-block self-end"
+        >
+          Save
+        </button>
       </form>
     </div>
   );

@@ -75,7 +75,9 @@ const NumberComponent = ({
               backgrounds[data.color as keyof typeof backgrounds],
             )}
           >
-            <div
+            <button
+              type="button"
+              disabled={disabled}
               onClick={() => {
                 if (field.value == undefined) {
                   field.onChange(true);
@@ -84,24 +86,22 @@ const NumberComponent = ({
                 }
               }}
               className={clsx(
-                "btn-xl btn-xl btn btn-square border-none bg-base-100/20 text-2xl shadow-none outline-none hover:bg-base-100/50 hover:shadow-xl",
-                { "pointer-events-none text-base-content/30": disabled },
+                "btn-xl btn btn-square border-none bg-base-300/20 text-2xl outline-none",
+                "swap swap-flip",
+                field.value ? "swap-active" : null,
               )}
             >
-              {field.value ? (
-                <svg
-                  className={clsx(
-                    "h-8 w-8 hover:bg-base-100/20",
-                    colors[markerSettings.fill as keyof typeof colors].text,
-                    colors[markerSettings.stroke as keyof typeof colors].stroke,
-                  )}
-                >
-                  {icons[markerSettings.icon as keyof typeof icons]}
-                </svg>
-              ) : (
-                data.num
-              )}
-            </div>
+              <svg
+                className={clsx(
+                  "swap-on h-8 w-8 hover:bg-base-100/20",
+                  colors[markerSettings.fill as keyof typeof colors].text,
+                  colors[markerSettings.stroke as keyof typeof colors].stroke,
+                )}
+              >
+                {icons[markerSettings.icon as keyof typeof icons]}
+              </svg>
+              <span className="swap-off">{data.num}</span>
+            </button>
           </div>
         );
       }}

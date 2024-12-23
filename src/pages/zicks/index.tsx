@@ -1,23 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { atom, useAtom, useSetAtom } from "jotai";
+import { useAtomValue } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 import RowComponent from "../../components/quixx/RowComponent";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import NegativeComponent from "../../components/quixx/NegativeComponent";
-import { getCookie, hasCookie } from "cookies-next";
+import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 
 import Score from "../../components/quixx/Score";
 import { games } from "../../components/quixx/games";
 import IconModal from "../../components/quixx/IconModal";
 
-export const markerAtom = atom({
+export const markerAtom = atomWithStorage("quixMarker", {
   icon: "XMarkIcon",
   fill: "primary",
   stroke: "primary",
 });
 
-export const gameAtom = atom(games.main);
+export const gameAtom = atomWithStorage("quixGame", games.main);
 
 export type blockType = {
   color: string;
@@ -59,14 +61,14 @@ type FormValues = {
   negatives: negatives;
 };
 
-export const rowCountsAtom = atom({
+export const rowCountsAtom = atomWithStorage("rowCountsAtom", {
   red: 0,
   yellow: 0,
   green: 0,
   blue: 0,
 });
 
-export const rowClosedAtom = atom({
+export const rowClosedAtom = atomWithStorage("rowClosedAtom", {
   red: false,
   yellow: false,
   green: false,
@@ -74,23 +76,11 @@ export const rowClosedAtom = atom({
 });
 
 const Home: NextPage = () => {
-  const [game, setGame] = useAtom(gameAtom);
-  const setMarker = useSetAtom(markerAtom);
+  const game = useAtomValue(gameAtom);
   const [iconModal, setIconModal] = useState(false);
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: game,
   });
-
-  useEffect(() => {
-    if (hasCookie("markerSettings")) {
-      const markerSettings = JSON.parse(getCookie("markerSettings")!);
-      setMarker(markerSettings);
-    }
-    if (hasCookie("game")) {
-      const game = games[getCookie("game") as keyof typeof games];
-      setGame(game);
-    }
-  }, []);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
 
@@ -102,39 +92,61 @@ const Home: NextPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="h-screen w-full overflow-y-auto bg-base-300 p-2">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2 overflow-auto scroll-smooth rounded-box bg-base-100 p-2">
-            <RowComponent rowKey={"red"} control={control} rowData={game.red} />
-            <RowComponent
-              rowKey={"yellow"}
-              control={control}
-              rowData={game.yellow}
-            />
-            <RowComponent
-              rowKey={"green"}
-              control={control}
-              rowData={game.green}
-            />
-            <RowComponent
-              rowKey={"blue"}
-              control={control}
-              rowData={game.blue}
-            />
-          </div>
-          <div className="flex flex-row gap-2 overflow-y-auto rounded-box bg-base-200 p-2">
-            <Score control={control} />
-            <NegativeComponent control={control} />
-          </div>
-          <div
-            onClick={() => setIconModal(true)}
-            className="btn btn-accent btn-block h-11"
+      <TransformWrapper
+        disablePadding={true}
+        centerOnInit={true}
+        minScale={0.4}
+        maxScale={3}
+        doubleClick={{ disabled: true }}
+      >
+        <main>
+          <TransformComponent
+            wrapperClass="bg-base-300 p-10"
+            wrapperStyle={{ height: "100dvh", width: "100%" }}
+            contentClass="bg-transparent p-5"
           >
-            Change Marker
-          </div>
-        </form>
-        <IconModal open={iconModal} handleClose={() => setIconModal(false)} />
-      </main>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex h-full w-full flex-col gap-2"
+            >
+              <div className="flex flex-col gap-2 rounded-box bg-base-100 p-2">
+                <RowComponent
+                  rowKey={"red"}
+                  control={control}
+                  rowData={game.red}
+                />
+                <RowComponent
+                  rowKey={"yellow"}
+                  control={control}
+                  rowData={game.yellow}
+                />
+                <RowComponent
+                  rowKey={"green"}
+                  control={control}
+                  rowData={game.green}
+                />
+                <RowComponent
+                  rowKey={"blue"}
+                  control={control}
+                  rowData={game.blue}
+                />
+              </div>
+              <div className="flex h-20 flex-row items-center gap-2 rounded-box bg-base-200 p-2">
+                <Score control={control} />
+                <NegativeComponent control={control} />
+                <button
+                  type="button"
+                  onClick={() => setIconModal(true)}
+                  className="btn-xl btn btn-square btn-ghost"
+                >
+                  <AdjustmentsHorizontalIcon className="h-8 w-8 fill-primary" />
+                </button>
+              </div>
+            </form>
+          </TransformComponent>
+          <IconModal open={iconModal} handleClose={() => setIconModal(false)} />
+        </main>
+      </TransformWrapper>
     </>
   );
 };
