@@ -28,21 +28,13 @@ const RowComponent = ({
           control={control}
         />
       ))}
-      {/* <div
-        className="btn text-xl text-accent"
-        onClick={() =>
-          setRowClosed({
-            ...rowClosed,
-            [rowKey]: !rowClosed[rowKey as keyof typeof rowClosed],
-          })
-        }
-      >
-        test
-      </div> */}
       <label
-        className={clsx("text-md btn btn-ghost swap swap-rotate text-accent", {
-          "swap-active": rowClosed[rowKey as keyof typeof rowClosed],
-        })}
+        className={clsx(
+          "text-md btn btn-square btn-ghost swap swap-rotate text-accent",
+          {
+            "swap-active": rowClosed[rowKey as keyof typeof rowClosed],
+          },
+        )}
         onClick={() =>
           setRowClosed({
             ...rowClosed,

@@ -32,7 +32,7 @@ const NegativeComponent = ({
   control: any;
 }) => {
   return (
-    <div className="flex flex-row items-center gap-2 rounded-box border-4 border-secondary p-2">
+    <div className="flex h-full flex-row items-center gap-2 rounded-box border-2 border-secondary p-2">
       <Checkbox control={control} name={"negatives.first"} />
       <Checkbox control={control} name={"negatives.second"} />
       <Checkbox control={control} name={"negatives.third"} />
